@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+	production: false,
+	authUrl: "https://stonus.dev/wp-json",
+	apiUrl: "https://stonus.dev/wp-json/wp/v2",
+	stonusUrl: "https://stonus.dev/wp-json/stonus/v1",
 };
 
 /*

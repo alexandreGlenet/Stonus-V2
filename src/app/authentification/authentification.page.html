@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>authentification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="userForm" (ngSubmit)="onLogin()">
+    <ion-item>
+      <ion-label position="floating">Username</ion-label>
+      <ion-input formControlName="username"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input formControlName="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+
+
+
+    <ion-button expand="full" [disabled]="!userForm.valid" type="submit">Sign in</ion-button>
+    <ion-button expand="full" [disabled]="!userForm.valid" type="button" color="secondary" (click)="signUp()">Register
+    </ion-button>
+    <ion-button expand="full" type="button" color="tertiary" (click)="openPwReset()">Forgot password?</ion-button>
+
+
+  </form>
+</ion-content>
