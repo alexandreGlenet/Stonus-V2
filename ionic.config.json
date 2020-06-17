@@ -1,0 +1,7 @@
+{
+  "name": "stonus-propre",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
