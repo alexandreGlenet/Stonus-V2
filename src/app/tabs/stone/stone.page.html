@@ -20,19 +20,22 @@
 		</div>
 
 		<ion-card *ngFor="let stone of stones">
-			<ion-card-header>
-				<ion-card-title [innerHTML]="stone.title"></ion-card-title>
-				<ion-card-subtitle>{{ stone.created_at }}</ion-card-subtitle>
-				<ion-label>
-					latitude : {{ stone.latitude }}
-				</ion-label>
-			</ion-card-header>
-			<ion-card-content>
-				<img [src]="stone.photo" *ngIf="stone.photo" class="post-img" />
-				<!-- <div [innerHTML]="stone.excerpt.rendered"></div> -->
-				<ion-button expand="full" fill="clear" [routerLink]="['/', 'tabs','stone','stones', stone.id]"
-					text-right (click)="onStoneDetails()">Read More...</ion-button>
-			</ion-card-content>
+			<div *ngIf="stone.inbag == false">
+				<ion-card-header>
+					<ion-card-title [innerHTML]="stone.title"></ion-card-title>
+					<ion-card-subtitle>{{ stone.created_at }}</ion-card-subtitle>
+					<ion-label>
+						latitude : {{ stone.latitude }}
+					</ion-label>
+				</ion-card-header>
+				<ion-card-content>
+					<img [src]="stone.photo" *ngIf="stone.photo" class="post-img" />
+					<!-- <div [innerHTML]="stone.excerpt.rendered"></div> -->
+					<ion-button expand="full" fill="clear" [routerLink]="['/', 'tabs','stone','stones', stone.id]"
+						text-right (click)="onStoneDetails()">Read More...</ion-button>
+				</ion-card-content>
+			</div>
+
 		</ion-card>
 	</div>
 

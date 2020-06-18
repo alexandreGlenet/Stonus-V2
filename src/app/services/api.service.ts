@@ -222,7 +222,7 @@ export class ApiService {
 
 	// CREATE STONE
 
-	validateCreateStone(title, description, user_id) {
+	validateCreateStone(title, description, user_id, inbag) {
 		// -- safety, todo form validation
 		if (
 			!title ||
@@ -242,12 +242,13 @@ export class ApiService {
 			}),
 		};
 
-		console.log("Resgister Stone: ", title, description, user_id);
+		console.log("Resgister Stone: ", title, description, user_id, inbag);
 
 		const postData = new FormData();
 		postData.append("title", title);
 		postData.append("description", description);
 		postData.append("createur", user_id);
+		postData.append("inbag", inbag);
 		//postData.append("photo", photoStone);
 		//console.log(postData);
 		return this.http.post(

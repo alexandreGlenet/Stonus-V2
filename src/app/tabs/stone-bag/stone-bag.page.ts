@@ -37,6 +37,9 @@ export class StoneBagPage implements OnInit {
 	//Formulaire création Stone
 	stoneForm: FormGroup;
 	onCreate = false;
+	//inbag = false;
+	//true = true;
+	//false = false;
 	//PHOTO
 	//photoStone = null;
 	user_id = this.api.getUserId();
@@ -107,14 +110,15 @@ export class StoneBagPage implements OnInit {
 	// 	);
 	// }
 
-	createStone() {
-		//this.onCreate = true;
-		this.stoneForm = this.fb.group({
-			title: ["", Validators.required],
-			description: "",
-			user_id: "",
-		});
-	}
+	// createStone() {
+	// 	//this.onCreate = true;
+	// 	this.stoneForm = this.fb.group({
+	// 		title: ["", Validators.required],
+	// 		description: "",
+	// 		user_id: "",
+	// 		inbag: "",
+	// 	});
+	// }
 
 	validateCreateStone() {
 		this.onCreate = false;
@@ -123,7 +127,8 @@ export class StoneBagPage implements OnInit {
 			.validateCreateStone(
 				this.stoneForm.value.title,
 				this.stoneForm.value.description,
-				(this.stoneForm.value.user_id = this.user_id)
+				(this.stoneForm.value.user_id = this.user_id),
+				(this.stoneForm.value.inbag = true)
 			)
 			.subscribe(
 				async (res) => {
@@ -198,6 +203,7 @@ export class StoneBagPage implements OnInit {
 				title: ["", Validators.required],
 				description: "",
 				user_id: "",
+				inbag: "",
 			});
 		}
 	}

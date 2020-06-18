@@ -103,8 +103,9 @@ add_action('rest_api_init', function () {
                 'title' => get_the_title($stone),
                 'latitude' => get_field('latitude', $stone),
                 'longitude' => get_field('longitude', $stone),
-                'createur_id' => get_field('createur', $stone),
+                'createur' => get_field('createur', $stone),
                 'description' => get_field('description', $stone),
+                'inbag' => get_field('inbag', $stone),
                 'photo' => [
                     'alt' => get_field('photo', $stone)['alt'],
                     'sizes' => [
@@ -142,6 +143,7 @@ add_action('rest_api_init', function () {
                 'longitude' => get_field('longitude', $stone_id),
                 'createur' => get_field('createur', $stone_id),
                 'description' => get_field('description', $stone_id),
+                'inbag' => get_field('inbag', $stone_id),
                 'photo' => [
                     'alt' => get_field('photo', $stone_id)['alt'],
                     'sizes' => [
@@ -217,6 +219,9 @@ add_action('rest_api_init', function () {
                 'id' => $user_stone,
                 'title' => get_the_title($user_stone),
                 'latitude' => get_field('latitude', $user_stone),
+                'longitude' => get_field('longitude', $user_stone),
+                'createur' => get_field('createur', $user_stone),
+                'inbag' => get_field('inbag', $user_stone),
                 'photo' => [
                     'alt' => get_field('photo', $user_stone)['alt'],
                     'sizes' => [
@@ -374,6 +379,7 @@ add_action('rest_api_init', function () {
     $description = isset($params['description']) ? $params['description'] : null;
     $createur_id = isset($params['createur']) ? $params['createur'] : null;
     $photo = isset($params['photo']) ? $params['photo'] : null;
+    $inbag = isset($params['inbag']) ? $params['inbag'] : null;
     //return $photo;
     //return $_FILES;
     // if ($_FILES) {
@@ -398,6 +404,7 @@ add_action('rest_api_init', function () {
             'longitude' => $longitude,
             'photo' => $photo,
             'createur' => $createur_id,
+            'inbag' => $inbag,
         ]
         
     ]);
@@ -428,7 +435,8 @@ add_action('rest_api_init', function () {
         'title' => get_the_title($stone_id),
         'description' => $stonedata->description,
         'photo' => $stonedata->photo,
-        'createur' => $stonedata->createur_id
+        'createur' => $stonedata->createur_id,
+        'inbag' => $stonedata->inbag
     ];
 
     return new WP_REST_Response($return, 200);

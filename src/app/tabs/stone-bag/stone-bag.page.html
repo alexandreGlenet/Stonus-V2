@@ -25,11 +25,18 @@
             </div> -->
               <div class="border-color">
                 <div class="border-white">
-                  <ion-avatar>
-                    <img [src]="stone.photo.sizes['medium']" [style.width]="'100%'" *ngIf="stone.photo.sizes.medium" />
-                    <img src="../../../assets/img/no-image.png" [style.width]="'100%'"
-                      *ngIf="!stone.photo.sizes.medium" />
-                  </ion-avatar>
+                  <a [routerLink]=" ['/', 'tabs' ,'stone-bag','stones', stone.id]">
+                    <ion-avatar>
+
+                      <img [src]="stone.photo.sizes['medium']" [style.width]="'100%'"
+                        *ngIf="stone.photo.sizes.medium" />
+                      <img src="../../../assets/img/camera.png" [style.width]="'100%'"
+                        *ngIf="!stone.photo.sizes.medium" />
+
+
+                    </ion-avatar>
+                  </a>
+
                 </div>
               </div>
               <!-- </ion-list> -->
@@ -53,8 +60,12 @@
         <ion-input formControlName="description"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="hidden">
         <ion-input formControlName="user_id"></ion-input>
+      </ion-item>
+
+      <ion-item class="hidden">
+        <ion-input formControlName="inbag"></ion-input>
       </ion-item>
 
       <!-- <ion-item class="">
