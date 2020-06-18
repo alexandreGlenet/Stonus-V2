@@ -222,7 +222,7 @@ export class ApiService {
 
 	// CREATE STONE
 
-	validateCreateStone(title, description, photoStone) {
+	validateCreateStone(title, description, user_id) {
 		// -- safety, todo form validation
 		if (
 			!title ||
@@ -233,14 +233,28 @@ export class ApiService {
 			return of(null);
 		}
 
-		console.log("Resgister Stone: ", title, description, photoStone);
+		let options = {
+			observe: "response" as "body",
+
+			headers: new HttpHeaders({
+				// "Content-Type": "application/json; charset=utf-8",
+				Authorization: "Bearer " + this.getUserToken(),
+			}),
+		};
+
+		console.log("Resgister Stone: ", title, description, user_id);
 
 		const postData = new FormData();
 		postData.append("title", title);
 		postData.append("description", description);
-		postData.append("photo", photoStone);
+		postData.append("createur", user_id);
+		//postData.append("photo", photoStone);
 		//console.log(postData);
-		return this.http.post(`${environment.stonusUrl}/stones/add`, postData);
+		return this.http.post(
+			`${environment.stonusUrl}/stones/add`,
+			postData,
+			options
+		);
 	}
 
 	// UTILITAIRES

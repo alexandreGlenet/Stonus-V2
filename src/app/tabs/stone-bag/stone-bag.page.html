@@ -5,32 +5,46 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row class="flex">
-      <div *ngFor="let stone of user?.user_stone">
-        <div>
-          <ion-col size="6">
-            <!-- <ion-list> -->
-            <!-- <div class="header">
+  <ion-segment value="bag" (ionChange)="onFilterUpdate($event)" [(ngModel)]="segmentModel">
+    <ion-segment-button value="bag">
+      <ion-label>Stones's bag</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="create-stone">
+      <ion-label>Create-Stone</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div *ngIf="segmentModel === 'bag'">
+    <ion-grid>
+      <ion-row class="flex">
+        <div *ngFor="let stone of user?.user_stone">
+          <div>
+            <ion-col size="6">
+              <!-- <ion-list> -->
+              <!-- <div class="header">
               <h2>{{ stone.title }}</h2>
             </div> -->
-            <div class="border-color">
-              <div class="border-white">
-                <ion-avatar>
-                  <img [src]="stone.photo.sizes['medium']" [style.width]="'100%'" *ngIf="stone.photo.sizes.medium">
-                </ion-avatar>
+              <div class="border-color">
+                <div class="border-white">
+                  <ion-avatar>
+                    <img [src]="stone.photo.sizes['medium']" [style.width]="'100%'" *ngIf="stone.photo.sizes.medium" />
+                    <img src="../../../assets/img/no-image.png" [style.width]="'100%'"
+                      *ngIf="!stone.photo.sizes.medium" />
+                  </ion-avatar>
+                </div>
               </div>
-            </div>
-            <!-- </ion-list> -->
-          </ion-col>
+              <!-- </ion-list> -->
+            </ion-col>
+          </div>
         </div>
-      </div>
-    </ion-row>
-  </ion-grid>
-  <div *ngIf="onCreate">
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div *ngIf="segmentModel === 'create-stone'">
+    <!-- <div *ngIf="onCreate"> -->
     <form [formGroup]="stoneForm" (ngSubmit)="validateCreateStone()">
       <ion-item>
-        <ion-label position="floating">Title</ion-label>
+        <ion-label position="floating">Nom de la Pierre</ion-label>
         <ion-input formControlName="title"></ion-input>
       </ion-item>
 
@@ -39,39 +53,47 @@
         <ion-input formControlName="description"></ion-input>
       </ion-item>
 
-      <ion-item class="">
-        <ion-label position="">Photo de la pierre</ion-label>
-        <input formControlName="photoStone">
-      </ion-item>
-
       <ion-item>
-        <img [src]="photoStone" style="width:60px; height:60px;" />
+        <ion-input formControlName="user_id"></ion-input>
       </ion-item>
 
-      <ion-button (click)="takePicture()"></ion-button>
+      <!-- <ion-item class="">
+				<ion-label position="">Photo de la pierre</ion-label>
+				<input formControlName="photoStone" />
+			</ion-item> -->
+
+      <!-- <ion-item>
+				<img [src]="photoStone" style="width: 60px; height: 60px;" />
+			</ion-item> -->
+
+      <!-- <ion-button (click)="takePicture()"></ion-button> -->
+
+      <!-- <img
+				[src]="imageUrl"
+				style="width: 60px; height: 60px;"
+				[hidden]="hideImage"
+			/>
+			<ion-button (click)="getPhoto()"></ion-button>
+      <ion-button (click)="uploadPhoto()"></ion-button> -->
 
       <!-- <img formControlName="photoStone" (click)="takePicture()" [src]="photoStone" style="width:60px; height:60px;" /> -->
       <!-- <ion-item>
         <ion-label position="floating">Password</ion-label>
         <ion-input type="password" formControlName="password"></ion-input>
       </ion-item> -->
-
-
-
-      <ion-button expand="full" [disabled]="!stoneForm.valid || !this.photoStone" type="submit">
+      <!-- || !this.photoStone -->
+      <ion-button expand="full" [disabled]="!stoneForm.valid" type="submit">
         Confirm</ion-button>
-
-
-
-
     </form>
+    <!-- </div> -->
+    <!-- fab placed to the bottom end -->
+    <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!onCreate">
+      <ion-fab-button color="danger" (click)="createStone()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab> -->
   </div>
 
 
-  <!-- fab placed to the bottom end -->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!onCreate">
-    <ion-fab-button color="danger" (click)="createStone()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+
 </ion-content>

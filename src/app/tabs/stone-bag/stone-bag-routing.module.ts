@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: StoneBagPage
+  },
+  {
+    path: 'create-stone',
+    loadChildren: () => import('./create-stone/create-stone.module').then( m => m.CreateStonePageModule)
   }
 ];
 
