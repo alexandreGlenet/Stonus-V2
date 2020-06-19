@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ stone?.title }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/stone/placed-stone"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item style="cursor: pointer;" (click)="positionLocation()">
+    <ion-button fill="clear">
+      <ion-icon slot="start" name="map"></ion-icon>
+      Locate Position
+    </ion-button>
+  </ion-item>
+</ion-content>

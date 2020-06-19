@@ -5,6 +5,8 @@
 </ion-header>
 
 <ion-content>
+  <!-- SEGMENT -->
+  <!-- --------------------------------------------------------------------------------- -->
   <ion-segment value="bag" (ionChange)="onFilterUpdate($event)" [(ngModel)]="segmentModel">
     <ion-segment-button value="bag">
       <ion-label>Stones's bag</ion-label>
@@ -13,6 +15,8 @@
       <ion-label>Create-Stone</ion-label>
     </ion-segment-button>
   </ion-segment>
+  <!-- STONES-LIST-BAG -->
+  <!-- ------------------------------------------------------------------------------------ -->
   <div *ngIf="segmentModel === 'bag'">
     <ion-grid>
       <ion-row class="flex">
@@ -46,7 +50,8 @@
       </ion-row>
     </ion-grid>
   </div>
-
+  <!-- CREATE STONE FORM -->
+  <!-- ---------------------------------------------------------------------------------------- -->
   <div *ngIf="segmentModel === 'create-stone'">
     <!-- <div *ngIf="onCreate"> -->
     <form [formGroup]="stoneForm" (ngSubmit)="validateCreateStone()">
