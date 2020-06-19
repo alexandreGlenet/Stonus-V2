@@ -170,8 +170,8 @@ export class PlacedSelectedStonePage implements OnInit {
 
 		this.api
 			.validatePlacedStone(
-				this.placedStoneForm.value.title,
-				this.placedStoneForm.value.description,
+				this.placedStoneForm.value.latitude,
+				this.placedStoneForm.value.longitude,
 				(this.placedStoneForm.value.inbag = true)
 			)
 			.subscribe(
@@ -186,6 +186,21 @@ export class PlacedSelectedStonePage implements OnInit {
 					this.showError(err);
 				}
 			);
+	}
+
+	// Add Lat Lng
+	// ------------------------------------------------------------
+
+	addLatLng() {
+		this.placedStoneForm.setValue({
+			latitude: this.newMarker.getLatLng().lat,
+			longitude: this.newMarker.getLatLng().lng,
+			inbag: false,
+		});
+		// this.placedStoneForm.value.latitude = this.newMarker.getLatLng().lat;
+		// this.placedStoneForm.value.longitude = this.newMarker.getLatLng().lng;
+		console.log("latitude: ", this.placedStoneForm.value.latitude);
+		console.log("longitude: ", this.placedStoneForm.value.longitude);
 	}
 
 	// UTILITAIRES

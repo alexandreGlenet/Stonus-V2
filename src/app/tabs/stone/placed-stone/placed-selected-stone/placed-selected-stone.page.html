@@ -30,7 +30,7 @@
   <form [formGroup]="placedStoneForm" (ngSubmit)="validatePlacedStone()">
 
 
-    <ion-item class="">
+    <ion-item class="hidden">
       <ion-input formControlName="latitude"></ion-input>
     </ion-item>
 
@@ -42,10 +42,17 @@
       <ion-input formControlName="inbag"></ion-input>
     </ion-item>
 
+    <ion-item style="cursor: pointer;" (click)="addLatLng()">
+      <ion-button fill="clear">
+        <ion-icon slot="start" name="map"></ion-icon>
+        Je veux mettre ma pierre ici
+      </ion-button>
+    </ion-item>
+
     <!-- <ion-button expand="full" [disabled]="!stoneForm.valid" type="submit">
       Confirm</ion-button> -->
     <ion-button shape="round" expand="block" [disabled]="!placedStoneForm.valid" routerLink="/tabs/stone" type="submit">
-      Je veux déposer la pierre ici !
+      Oui je suis sur !
     </ion-button>
   </form>
 
