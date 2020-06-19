@@ -9,6 +9,7 @@ import * as L from "leaflet";
 import "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 import { getInterpolationArgsLength } from "@angular/compiler/src/render3/view/util";
+import { PlacedStoneComponent } from "./placed-stone/placed-stone.component";
 
 @Component({
 	selector: "app-stone",
@@ -209,6 +210,14 @@ export class StonePage implements OnInit {
 			//50.597068799999995, 5.6131584000000005
 			icon: this.smallIcon,
 		}).addTo(this.map);
+	}
+
+	openModalPlaceStone() {
+		this.modalCtrl
+			.create({ component: PlacedStoneComponent })
+			.then((modalEl) => {
+				modalEl.present();
+			});
 	}
 
 	// EVENT ON SEGMENT

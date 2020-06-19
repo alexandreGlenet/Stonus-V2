@@ -9,9 +9,11 @@ import { StonePageRoutingModule } from "./stone-routing.module";
 //import { HereMapComponent } from "../../components/here-map/here-map.component";
 
 import { StonePage } from "./stone.page";
+import { PlacedStoneComponent } from "./placed-stone/placed-stone.component";
 
 @NgModule({
 	imports: [CommonModule, FormsModule, IonicModule, StonePageRoutingModule],
-	declarations: [StonePage],
+	declarations: [StonePage, PlacedStoneComponent],
+	entryComponents: [PlacedStoneComponent],
 })
 export class StonePageModule {}
