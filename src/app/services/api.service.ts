@@ -157,6 +157,45 @@ export class ApiService {
 		);
 	}
 
+	// PLACED STONE
+	// ---------------------------------------------------------------------------
+
+	validatePlacedStone(latitude, longitude, inbag) {
+		// -- safety, todo form validation
+		if (
+			!latitude ||
+			!longitude
+			// !photoStone
+		) {
+			console.log("error creation, missing elements");
+			return of(null);
+		}
+
+		let options = {
+			observe: "response" as "body",
+
+			headers: new HttpHeaders({
+				// "Content-Type": "application/json; charset=utf-8",
+				Authorization: "Bearer " + this.getUserToken(),
+			}),
+		};
+
+		console.log("Resgister Stone: ", latitude, longitude, inbag);
+
+		const placedStoneData = new FormData();
+		placedStoneData.append("latitude", latitude);
+		placedStoneData.append("longitude", longitude);
+		//postData.append("createur", user_id);
+		placedStoneData.append("inbag", inbag);
+		//postData.append("photo", photoStone);
+		//console.log(postData);
+		return this.http.post(
+			`${environment.stonusUrl}/stones/add`,
+			placedStoneData,
+			options
+		);
+	}
+
 	// USERS
 	// ---------------------------------------------------------------------------------------------
 

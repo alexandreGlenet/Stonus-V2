@@ -29,10 +29,13 @@ const routes: Routes = [
 				(m) => m.PickupLocationPageModule
 			),
 	},
-  {
-    path: 'placed-stone',
-    loadChildren: () => import('./placed-stone/placed-stone.module').then( m => m.PlacedStonePageModule)
-  },
+	{
+		path: "placed-stone",
+		loadChildren: () =>
+			import("./placed-stone/placed-stone.module").then(
+				(m) => m.PlacedStonePageModule
+			),
+	},
 ];
 
 @NgModule({

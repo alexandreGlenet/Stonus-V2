@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ stone?.title }}</ion-title>
+    <ion-title>Place cette pierre</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/stone/placed-stone"></ion-back-button>
     </ion-buttons>
@@ -8,10 +8,46 @@
 </ion-header>
 
 <ion-content>
-  <ion-item style="cursor: pointer;" (click)="positionLocation()">
-    <ion-button fill="clear">
-      <ion-icon slot="start" name="map"></ion-icon>
-      Locate Position
+  <div class="flex">
+    <h1>{{ stone?.title }}</h1>
+  </div>
+  <div class="flex">
+    <div class="border-color">
+      <div class="border-white">
+        <div *ngIf="stone">
+          <ion-avatar>
+            <img [src]="stone.photo" [style.width]="'100%'" *ngIf="stone.photo" />
+            <img src="../../../assets/img/rock.png" [style.width]="'100%'" *ngIf="!stone.photo" />
+          </ion-avatar>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <form [formGroup]="placedStoneForm" (ngSubmit)="validatePlacedStone()">
+
+
+    <ion-item class="">
+      <ion-input formControlName="latitude"></ion-input>
+    </ion-item>
+
+    <ion-item class="hidden">
+      <ion-input formControlName="longitude"></ion-input>
+    </ion-item>
+
+    <ion-item class="hidden">
+      <ion-input formControlName="inbag"></ion-input>
+    </ion-item>
+
+    <!-- <ion-button expand="full" [disabled]="!stoneForm.valid" type="submit">
+      Confirm</ion-button> -->
+    <ion-button shape="round" expand="block" [disabled]="!placedStoneForm.valid" routerLink="/tabs/stone" type="submit">
+      Je veux déposer la pierre ici !
     </ion-button>
-  </ion-item>
+  </form>
+
+
 </ion-content>

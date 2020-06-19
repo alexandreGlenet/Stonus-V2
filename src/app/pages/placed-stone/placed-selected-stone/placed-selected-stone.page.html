@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Place cette pierre</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/stone/placed-stone"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="mapId-2" [ngClass]="{ 'hide': segmentModel != 'map' }"></div>
+  <h1>{{ stone?.title }}</h1>
+  <div *ngIf="stone">
+    <img [src]="stone.photo" [style.width]="'100%'" *ngIf="stone.photo" />
+    <img src="../../../assets/img/rock.png" [style.width]="'100%'" *ngIf="!stone.photo" />
+  </div>
+
+  <ion-item style="cursor: pointer;" (click)="positionLocation()">
+    <ion-button fill="clear">
+      <ion-icon slot="start" name="map"></ion-icon>
+      Locate Position
+    </ion-button>
+  </ion-item>
+</ion-content>

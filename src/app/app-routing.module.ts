@@ -21,6 +21,18 @@ const routes: Routes = [
 				(m) => m.AuthentificationPageModule
 			),
 	},
+	{
+		path: "placed-stone",
+		loadChildren: () =>
+			import("./pages/placed-stone/placed-stone.module").then(
+				(m) => m.PlacedStonePageModule
+			),
+	},
+	{
+		path: "pages",
+		loadChildren: () =>
+			import("./pages/pages.module").then((m) => m.PagesPageModule),
+	},
 ];
 
 @NgModule({

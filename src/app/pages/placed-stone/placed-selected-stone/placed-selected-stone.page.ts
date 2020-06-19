@@ -7,9 +7,8 @@ import "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 
 import { Plugins } from "@capacitor/core";
-import { AlertController, ToastController } from "@ionic/angular";
+import { AlertController } from "@ionic/angular";
 import { ApiService } from "src/app/services/api.service";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 const { Share } = Plugins;
 
 @Component({
@@ -20,11 +19,7 @@ const { Share } = Plugins;
 export class PlacedSelectedStonePage implements OnInit {
 	// Declaration
 	// -----------------------------------------------------------------------------------
-	// Stone
-	// -------------------------------------------
 	stone = null;
-	// FORM -----------------------------------------------------------------------------
-	placedStoneForm: FormGroup;
 	// MAP
 	// -----------------------------------------------------------------------------------
 	map: L.Map;
@@ -66,9 +61,7 @@ export class PlacedSelectedStonePage implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private api: ApiService,
-		private alertCtrl: AlertController,
-		private toastCtrl: ToastController,
-		private fb: FormBuilder
+		private alertCtrl: AlertController
 	) {}
 
 	// LIFE-CYCLE
@@ -80,12 +73,6 @@ export class PlacedSelectedStonePage implements OnInit {
 		this.api.getStoneContent(id).subscribe((res) => {
 			console.log("stone: ", res);
 			this.stone = res;
-		});
-
-		this.placedStoneForm = this.fb.group({
-			latitude: ["", Validators.required],
-			longitude: ["", Validators.required],
-			inbag: "",
 		});
 	}
 
@@ -155,50 +142,9 @@ export class PlacedSelectedStonePage implements OnInit {
 	// ----------------------------------------------------------------------------------
 
 	loadLocateMap() {
-		this.map = new L.Map("mapId").setView([50.64, 5.576], 16);
+		this.map = new L.Map("mapId-2").setView([50.64, 5.576], 16);
 		this.mainLayer.addTo(this.map);
 		this.locatePosition();
-	}
-
-	// STONE - DEPOSER LA PIERRE
-	// -----------------------------------------------------------------------------------------------------
-
-	// Validate placed Stone
-	// --------------------------------------------------------------------------------------
-	validatePlacedStone() {
-		//this.onCreate = false;
-
-		this.api
-			.validatePlacedStone(
-				this.placedStoneForm.value.title,
-				this.placedStoneForm.value.description,
-				(this.placedStoneForm.value.inbag = true)
-			)
-			.subscribe(
-				async (res) => {
-					const toast = await this.toastCtrl.create({
-						message: res["message"],
-						duration: 3000,
-					});
-					toast.present();
-				},
-				(err) => {
-					this.showError(err);
-				}
-			);
-	}
-
-	// UTILITAIRES
-	// -------------------------------------------------------------------
-
-	async showError(err) {
-		const alert = await this.alertCtrl.create({
-			header: err.error.code,
-			subHeader: err.error.data.status,
-			message: err.error.message,
-			buttons: ["OK"],
-		});
-		await alert.present();
 	}
 	// END -----------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------------

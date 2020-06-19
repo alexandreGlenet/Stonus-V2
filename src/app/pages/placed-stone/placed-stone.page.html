@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Choisis une pierre</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/stone"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row class="flex">
+      <div *ngFor="let stone of user?.user_stone">
+        <div>
+          <ion-col size="6">
+            <!-- <ion-list> -->
+            <!-- <div class="header">
+              <h2>{{ stone.title }}</h2>
+            </div> -->
+            <div class="border-color">
+              <div class="border-white">
+                <a [routerLink]=" ['/', 'pages' ,'placed-stone', 'stones', stone.id]">
+                  <ion-avatar>
+
+                    <img [src]="stone.photo.sizes['medium']" [style.width]="'100%'" *ngIf="stone.photo.sizes.medium" />
+                    <img src="../../../assets/img/camera.png" [style.width]="'100%'"
+                      *ngIf="!stone.photo.sizes.medium" />
+
+
+                  </ion-avatar>
+                </a>
+
+              </div>
+            </div>
+            <!-- </ion-list> -->
+          </ion-col>
+        </div>
+      </div>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

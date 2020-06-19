@@ -83,11 +83,11 @@ export class StonePage implements OnInit {
 	}
 
 	ionViewWillEnter() {
-		//console.log("willEnter-stone.page");
+		console.log("stone.page: willEnter");
 	}
 
 	ionViewDidEnter() {
-		console.log("didEnter-stone.page");
+		console.log("stone.page: didEnter");
 		this.loadLocateMap(); // 2- je charge sur "map"
 		console.log(this.DetailsIsActive);
 		if (this.DetailsIsActive === true) {
@@ -100,7 +100,7 @@ export class StonePage implements OnInit {
 	}
 
 	ionViewWillLeave() {
-		console.log("willleave-stone.page");
+		console.log("stone.page: willleave");
 		//console.log(this.map);
 		this.segmentModel = "map"; // 1 - Quand je sors je reidrige vers map pour qu'au chargement de la map il n'yai pas de probleme graphique
 
