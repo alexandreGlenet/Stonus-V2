@@ -33,10 +33,19 @@ add_action('rest_api_init', function () {
         },
     ));
 
-    // CREATE STONE
+    // CREATE STONE    =>     POST
     register_rest_route('stonus/v1', 'stones/add', array(
         'methods' => 'POST',
         'callback' => 'alx_create_stone',
+        'permission_callback' => function ($request) {
+            return is_user_logged_in();
+        },
+    ));
+
+    // UPDATE STONE   =>     PUT
+    register_rest_route('stonus/v1', 'stones/(?P<stone_id>\d+)', array(
+        'methods' => 'PUT',
+        'callback' => 'alx_update_stone',
         'permission_callback' => function ($request) {
             return is_user_logged_in();
         },
@@ -156,6 +165,125 @@ add_action('rest_api_init', function () {
         }
 
         return $data;
+    }
+
+    // CREATE STONE
+
+    function alx_create_stone(WP_REST_Request $request)
+{
+    
+    $params = $request->get_params();
+    $errors = new WP_Error();
+    
+    
+    $title = isset($params['title']) ? $params['title'] : null;
+    //return $title;
+    $latitude = isset($params['latitude']) ? $params['latitude'] : null;
+    $longitude = isset($params['longitude']) ? $params['longitude'] : null;
+    $description = isset($params['description']) ? $params['description'] : null;
+    $createur_id = isset($params['createur']) ? $params['createur'] : null;
+    $photo = isset($params['photo']) ? $params['photo'] : null;
+    $inbag = isset($params['inbag']) ? $params['inbag'] : null;
+    //return $photo;
+    //return $_FILES;
+    // if ($_FILES) {
+    //     require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+    //     require_once(ABSPATH . "wp-admin" . '/includes/file.php');
+    //     require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+    //     $file_handler = 'photo';
+    //     $attach_id = media_handle_upload($file_handler,$pid );
+        
+    // }
+    
+    
+    //return $request;
+    $stone_id = wp_insert_post([
+        'post_type' => 'stones',
+        'post_status'   => 'publish',
+        //'id' => $stone,
+        'post_title' => $title,
+        'meta_input' => [
+            'description' => $description,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'photo' => $photo,
+            'createur' => $createur_id,
+            'inbag' => $inbag,
+        ]
+        
+    ]);
+
+    // Apres la création de la pierre je dois l'afficher le sac de l'utilisateur.
+    // Donc je dois recuperer l'id de l'utilisateur ( get_current_user_ID ne fonction qu'avec le permission callback )
+    // Je dois ensuite récupérer le champ sac de mon utilisateur
+    // Demander à loic
+    // Puis j'update le field bag voir la doc pour les paramètres.
+    
+    $user_id = get_current_user_ID();
+    $user_stones_ids =  get_field('bag', 'user_' . $user_id);
+
+    $user_stones_ids[] = $stone_id;
+    // iln'y a que pour les user et les taxonomie que l'on prefixe de 'user_' . $user_id, sinon pour les custom direct $post_id
+    update_field('bag', $user_stones_ids, 'user_' . $user_id);
+    
+      
+    if (is_wp_error($stone_id)) {
+        $errors->add('unknow', 'A problem occurred while creating the stone');
+        return $errors;
+    }
+
+
+    $stonedata = get_post($stone_id);
+    $return = [
+        'stone_id' => $stone_id,
+        'title' => get_the_title($stone_id),
+        'description' => $stonedata->description,
+        'photo' => $stonedata->photo,
+        'createur' => $stonedata->createur_id,
+        'inbag' => $stonedata->inbag
+    ];
+
+    return new WP_REST_Response($return, 200);
+}
+
+    // PUT STONE
+    // --------------------------------------------------------------
+
+    function alx_update_stone(WP_REST_Request $request){
+
+        //$stonedata = [];
+        $params = $request->get_params();
+        $stone_id = isset($params['stone_id']) ? esc_sql($params['stone_id']) : null;
+
+        $stonedata = get_post($stone_id);
+
+        $new_latitude = isset($params['latitude']) ? $params['latitude'] : null;
+        $new_longitude = isset($params['longitude']) ? $params['longitude'] : null;
+        $new_inbag = isset($params['inbag']) ? $params['inbag'] : null;
+
+        $stonedata = [
+        'ID'        => $stone_id,
+        'latitude'  => $new_latitude,
+        'longitude' => $new_longitude,
+        'inbag'     => $new_inbag
+    ];
+
+    $new_latitude !== null ? $stonedata['latitude'] = $new_latitude : null;
+    $new_longitude !== null ? $stonedata['longitude'] = $new_longitude : null;
+    $new_inbag !== null ? $stonedata['inbag'] = $new_inbag : null;
+
+    update_field('latitude', $new_latitude, $stone_id);
+    update_field('longitude', $new_longitude, $stone_id);
+    update_field('inbag', $new_inbag, $stone_id);
+
+    $updated_stone = wp_update_post($stonedata, $stone_id);
+
+    return new WP_REST_Response([
+        'status' => 200,
+        'response' => 'Stone has been updated',
+        'body_response' => $updated_stone,
+    ]);
+
     }
 
 
@@ -363,84 +491,7 @@ add_action('rest_api_init', function () {
     return new WP_REST_Response($return, 200);
 }
 
-// CREATE STONE
 
-    function alx_create_stone(WP_REST_Request $request)
-{
-    
-    $params = $request->get_params();
-    $errors = new WP_Error();
-    
-    
-    $title = isset($params['title']) ? $params['title'] : null;
-    //return $title;
-    $latitude = isset($params['latitude']) ? $params['latitude'] : null;
-    $longitude = isset($params['longitude']) ? $params['longitude'] : null;
-    $description = isset($params['description']) ? $params['description'] : null;
-    $createur_id = isset($params['createur']) ? $params['createur'] : null;
-    $photo = isset($params['photo']) ? $params['photo'] : null;
-    $inbag = isset($params['inbag']) ? $params['inbag'] : null;
-    //return $photo;
-    //return $_FILES;
-    // if ($_FILES) {
-    //     require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-    //     require_once(ABSPATH . "wp-admin" . '/includes/file.php');
-    //     require_once(ABSPATH . "wp-admin" . '/includes/media.php');
-    //     $file_handler = 'photo';
-    //     $attach_id = media_handle_upload($file_handler,$pid );
-        
-    // }
-    
-    
-    //return $request;
-    $stone_id = wp_insert_post([
-        'post_type' => 'stones',
-        'post_status'   => 'publish',
-        //'id' => $stone,
-        'post_title' => $title,
-        'meta_input' => [
-            'description' => $description,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-            'photo' => $photo,
-            'createur' => $createur_id,
-            'inbag' => $inbag,
-        ]
-        
-    ]);
-
-    // Apres la création de la pierre je dois l'afficher le sac de l'utilisateur.
-    // Donc je dois recuperer l'id de l'utilisateur ( get_current_user_ID ne fonction qu'avec le permission callback )
-    // Je dois ensuite récupérer le champ sac de mon utilisateur
-    // Demander à loic
-    // Puis j'update le field bag voir la doc pour les paramètres.
-    
-    $user_id = get_current_user_ID();
-    $user_stones_ids =  get_field('bag', 'user_' . $user_id);
-
-    $user_stones_ids[] = $stone_id;
-
-    update_field('bag', $user_stones_ids, 'user_' . $user_id);
-    
-      
-    if (is_wp_error($stone_id)) {
-        $errors->add('unknow', 'A problem occurred while creating the stone');
-        return $errors;
-    }
-
-
-    $stonedata = get_post($stone_id);
-    $return = [
-        'stone_id' => $stone_id,
-        'title' => get_the_title($stone_id),
-        'description' => $stonedata->description,
-        'photo' => $stonedata->photo,
-        'createur' => $stonedata->createur_id,
-        'inbag' => $stonedata->inbag
-    ];
-
-    return new WP_REST_Response($return, 200);
-}
 
 
 
