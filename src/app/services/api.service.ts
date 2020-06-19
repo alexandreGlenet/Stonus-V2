@@ -24,6 +24,9 @@ export class ApiService {
 	token: string;
 	//currentUserId = this.getUserId();
 
+	// CONSTRUCTOR
+	// --------------------------------------------------------------------
+
 	constructor(
 		private http: HttpClient,
 		private storage: Storage,
@@ -38,6 +41,11 @@ export class ApiService {
 			});
 		});
 	}
+
+	// STONES
+	// --------------------------------------------------------------------------
+
+	// GET STONES ---------------------------------------------------------------
 
 	getStones(page = 1): Observable<any> {
 		let options = {
@@ -73,6 +81,9 @@ export class ApiService {
 			);
 	}
 
+	// GET STONE
+	// ---------------------------------------------------------------------------------------
+
 	getStoneContent(id) {
 		return this.http
 			.get<any>(`${environment.authUrl}/stonus/v1/stones/${id}`)
@@ -86,121 +97,8 @@ export class ApiService {
 			);
 	}
 
-	// USERS
-
-	getUsers(page = 1): Observable<any> {
-		let options = {
-			observe: "response" as "body",
-			params: {
-				per_page: "5",
-				page: "" + page,
-			},
-			headers: new HttpHeaders({
-				"Content-Type": "application/json; charset=utf-8",
-				Authorization: "Bearer " + this.getUserToken(),
-			}),
-		};
-
-		return this.http
-			.get<any[]>(`${environment.authUrl}/stonus/v1/users`, options)
-			.pipe(
-				map((res) => {
-					let data = res["body"];
-
-					for (let user of data) {
-						if (user.photo) {
-							user.photo = user.photo.sizes["medium"];
-						}
-					}
-
-					return {
-						users: data,
-						pages: res["headers"].get("x-wp-totalpages"),
-						totalUsers: res["headers"].get("x-wp-total"),
-					};
-				})
-			);
-	}
-
-	getUserContent(id) {
-		return this.http
-			.get<any>(`${environment.authUrl}/stonus/v1/users/${id}`)
-			.pipe(
-				map((user) => {
-					if (user.photo) {
-						user.photo = user.photo.sizes["medium"];
-					}
-					// else {
-					// 	user.photo.sizes["medium"] = "../assets/img/no-image.jpg";
-					// }
-					return user;
-				})
-			);
-	}
-
-	// AUTH & USER
-
-	login(username: any, password: any) {
-		return this.http
-			.post(`${environment.authUrl}/jwt-auth/v1/token`, { username, password })
-			.pipe(
-				switchMap((data) => {
-					console.log("got token: ", data);
-					return from(this.storage.set(JWT_KEY, data));
-				}),
-				tap((data) => {
-					this.user.next(data);
-				})
-			);
-		this._userIsAuthenticated = true;
-	}
-
-	// signUp(username, email, password) {
-	// 	return this.http.post(`${environment.authUrl}/stonus/v1/users/register`, {
-	// 		username,
-	// 		email,
-	// 		password,
-	// 	});
-	// }
-
-	/**
-	 * Register a user
-	 * @param creation
-	 */
-	signUp(username, email, password) {
-		// -- safety, todo form validation
-		if (
-			//!creation.firstname ||
-			//!creation.lastname ||
-			!username ||
-			!email ||
-			!password
-		) {
-			console.log("error creation, missing elements");
-			return of(null);
-		}
-
-		console.log("Resgister user: ", username, email, password);
-
-		const postData = new FormData();
-		postData.append("username", username);
-		postData.append("email", email);
-		postData.append("password", password);
-		//postData.append("firstname", creation.firstname);
-		//postData.append("lastname", creation.lastname);
-
-		return this.http.post(`${environment.stonusUrl}/users/register`, postData);
-	}
-
-	resetPassword(usernameOrEmail) {
-		return this.http.post(`${environment.authUrl}/wp/v2/users/lostpassword`, {
-			user_login: usernameOrEmail,
-		});
-	}
-
-	ActivateUserIsAuthenticated() {
-		this._userIsAuthenticated = true;
-	}
+	// GET PRIVATE STONE
+	// --------------------------------------------------------------------------------------------
 
 	getPrivatePosts() {
 		return this.http
@@ -221,6 +119,7 @@ export class ApiService {
 	}
 
 	// CREATE STONE
+	// -------------------------------------------------------------------------------------------
 
 	validateCreateStone(title, description, user_id, inbag) {
 		// -- safety, todo form validation
@@ -258,7 +157,142 @@ export class ApiService {
 		);
 	}
 
+	// USERS
+	// ---------------------------------------------------------------------------------------------
+
+	// GET USERS
+	// ----------------------------------------------------------------------------------------------
+
+	getUsers(page = 1): Observable<any> {
+		let options = {
+			observe: "response" as "body",
+			params: {
+				per_page: "5",
+				page: "" + page,
+			},
+			headers: new HttpHeaders({
+				"Content-Type": "application/json; charset=utf-8",
+				Authorization: "Bearer " + this.getUserToken(),
+			}),
+		};
+
+		return this.http
+			.get<any[]>(`${environment.authUrl}/stonus/v1/users`, options)
+			.pipe(
+				map((res) => {
+					let data = res["body"];
+
+					for (let user of data) {
+						if (user.photo) {
+							user.photo = user.photo.sizes["medium"];
+						}
+					}
+
+					return {
+						users: data,
+						pages: res["headers"].get("x-wp-totalpages"),
+						totalUsers: res["headers"].get("x-wp-total"),
+					};
+				})
+			);
+	}
+
+	// GET USER
+	// ---------------------------------------------------------------------------------------
+
+	getUserContent(id) {
+		return this.http
+			.get<any>(`${environment.authUrl}/stonus/v1/users/${id}`)
+			.pipe(
+				map((user) => {
+					if (user.photo) {
+						user.photo = user.photo.sizes["medium"];
+					}
+					// else {
+					// 	user.photo.sizes["medium"] = "../assets/img/no-image.jpg";
+					// }
+					return user;
+				})
+			);
+	}
+
+	// AUTHENTIFICATION
+	// ----------------------------------------------------------------------------------------
+
+	// LOGIN
+	// -----------------------------------------------------------------------------------------
+
+	login(username: any, password: any) {
+		return this.http
+			.post(`${environment.authUrl}/jwt-auth/v1/token`, { username, password })
+			.pipe(
+				switchMap((data) => {
+					console.log("got token: ", data);
+					return from(this.storage.set(JWT_KEY, data));
+				}),
+				tap((data) => {
+					this.user.next(data);
+				})
+			);
+		this._userIsAuthenticated = true;
+	}
+
+	// signUp(username, email, password) {
+	// 	return this.http.post(`${environment.authUrl}/stonus/v1/users/register`, {
+	// 		username,
+	// 		email,
+	// 		password,
+	// 	});
+	// }
+
+	// SIGN UP
+	// --------------------------------------------------------------------------------------------
+
+	signUp(username, email, password) {
+		// -- safety, todo form validation
+		if (!username || !email || !password) {
+			console.log("error creation, missing elements");
+			return of(null);
+		}
+
+		console.log("Resgister user: ", username, email, password);
+
+		const postData = new FormData();
+		postData.append("username", username);
+		postData.append("email", email);
+		postData.append("password", password);
+
+		return this.http.post(`${environment.stonusUrl}/users/register`, postData);
+	}
+
+	// RESET PASSWORD
+	// ----------------------------------------------------------------------------------------------
+
+	resetPassword(usernameOrEmail) {
+		return this.http.post(`${environment.authUrl}/wp/v2/users/lostpassword`, {
+			user_login: usernameOrEmail,
+		});
+	}
+
+	// LOGOUT
+	// -----------------------------------------------------------------------------------------------
+
+	logout() {
+		this._userIsAuthenticated = false;
+		this.storage.remove(JWT_KEY).then(() => {
+			this.user.next(null);
+		});
+	}
+
+	// UTILITAIRES - AUTHENTIFICATION
+	// -----------------------------------------------------------------------------------------------
+
+	ActivateUserIsAuthenticated() {
+		this._userIsAuthenticated = true;
+	}
+
 	// UTILITAIRES
+	// -----------------------------------------------------------------------------------------------
 
 	getCurrentUser() {
 		return this.user.asObservable();
@@ -274,12 +308,5 @@ export class ApiService {
 
 	getUserId() {
 		return this.user.getValue().id;
-	}
-
-	logout() {
-		this._userIsAuthenticated = false;
-		this.storage.remove(JWT_KEY).then(() => {
-			this.user.next(null);
-		});
 	}
 }

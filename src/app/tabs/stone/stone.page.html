@@ -5,6 +5,8 @@
 </ion-header>
 
 <ion-content>
+	<!-- SEGMENT -->
+	<!-- -------------------------------------------------------------------------------- -->
 	<ion-segment value="map" (ionChange)="onFilterUpdate($event)" [(ngModel)]="segmentModel">
 		<ion-segment-button value="map">
 			<ion-label>Stones's map</ion-label>
@@ -13,7 +15,8 @@
 			<ion-label>Stones's list</ion-label>
 		</ion-segment-button>
 	</ion-segment>
-
+	<!-- STONE-LISTS -->
+	<!-- --------------------------------------------------------------------------------- -->
 	<div *ngIf="segmentModel === 'stones-list'">
 		<div *ngIf="totalStones > 0" class="ion-text-center ion-padding">
 			Found {{ totalStones }}
@@ -38,12 +41,20 @@
 
 		</ion-card>
 	</div>
-
+	<!-- STONE-MAP -->
+	<!-- --------------------------------------------------------------------------------------- -->
 	<div id="mapId" [ngClass]="{ 'hide': segmentModel != 'map' }"></div>
+	<!-- ---------------------------------------------------------------------------------------- -->
+	<!-- FOOTER WITH BUTTON FOR PLACE STONE -->
+	<!-- ---------------------------------------------------------------------------------------- -->
 	<ion-footer>
 		<div *ngIf="segmentModel === 'map'">
 			<ion-grid>
 				<ion-row>
+					<ion-col>
+						<ion-button shape="round" expand="block" (click)="placeStone()">Place a stone !
+						</ion-button>
+					</ion-col>
 					<ion-col size="12">
 						<ion-item style="cursor: pointer;" (click)="positionLocation()">
 							<ion-button fill="clear">
@@ -61,10 +72,7 @@
 						</ion-item>
 					</ion-col>
 
-					<ion-col>
-						<ion-button shape="round" expand="block" (click)="confirmPickupLocation()">Place a stone !
-						</ion-button>
-					</ion-col>
+
 				</ion-row>
 			</ion-grid>
 		</div>

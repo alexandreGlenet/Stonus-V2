@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { SegmentChangeEventDetail } from "@ionic/core";
 import { ApiService } from "src/app/services/api.service";
-import { LoadingController } from "@ionic/angular";
+import { LoadingController, ModalController } from "@ionic/angular";
 import { ChangeDetectorRef } from "@angular/core";
 
 import * as L from "leaflet";
@@ -22,15 +22,15 @@ export class StonePage implements OnInit {
 	location: string[];
 
 	smallIcon = new L.Icon({
-		iconUrl:
-			"https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-icon.png",
-		iconRetinaUrl:
-			"https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-icon-2x.png",
+		iconUrl: "../../assets/img/rock-1.png",
+		// iconRetinaUrl:
+		// 	"https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-icon-2x.png",
 		iconSize: [25, 41],
 		iconAnchor: [12, 41],
 		popupAnchor: [1, -34],
 		shadowUrl:
-			"https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+			//"https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+			"../../assets/img/rock-shadow.png",
 		shadowSize: [41, 41],
 	});
 
@@ -61,11 +61,18 @@ export class StonePage implements OnInit {
 	//Je viens de stone-list
 	DetailsIsActive = false;
 
+	// CONSTRUCTOR
+	// -----------------------------------------------------------------------
+
 	constructor(
 		private api: ApiService,
 		private loadingCtrl: LoadingController,
-		private cf: ChangeDetectorRef
+		private cf: ChangeDetectorRef,
+		private modalCtrl: ModalController
 	) {}
+
+	// LIFE CYCLE
+	// -----------------------------------------------------------------------
 
 	ngOnInit() {
 		console.log(this.api.getUserId());
@@ -74,6 +81,42 @@ export class StonePage implements OnInit {
 			this.loadStones();
 		}
 	}
+
+	ionViewWillEnter() {
+		//console.log("willEnter-stone.page");
+	}
+
+	ionViewDidEnter() {
+		console.log("didEnter-stone.page");
+		this.loadLocateMap(); // 2- je charge sur "map"
+		console.log(this.DetailsIsActive);
+		if (this.DetailsIsActive === true) {
+			// 3 - si je viens détails, réaffiche moi "stones-list". et donc plus de probleme d'affichage.
+			this.segmentModel = "stones-list";
+			this.DetailsIsActive = false;
+		}
+		//console.log(this.map);
+		console.log(this.segmentModel);
+	}
+
+	ionViewWillLeave() {
+		console.log("willleave-stone.page");
+		//console.log(this.map);
+		this.segmentModel = "map"; // 1 - Quand je sors je reidrige vers map pour qu'au chargement de la map il n'yai pas de probleme graphique
+
+		if (this.map !== undefined) {
+			this.map.remove();
+		} else {
+			//this.map.remove();
+		}
+	}
+
+	// ionViewDidLeave() {
+	// 	this.map.remove();
+	// }
+
+	// LOAD-STONES
+	// -----------------------------------------------------------------
 
 	async loadStones() {
 		let loading = await this.loadingCtrl.create({
@@ -98,6 +141,9 @@ export class StonePage implements OnInit {
 			}
 		);
 	}
+
+	// POSITION - MAP
+	// ------------------------------------------------------
 
 	// loadMap() {
 	// 	this.map = new L.Map("mapId2").setView([50.64, 5.576], 19); // fitworld fait buguer donc j'assigne une coordonnée au chargmenet ici l'univ de liege
@@ -150,42 +196,23 @@ export class StonePage implements OnInit {
 		this.locatePosition();
 	}
 
+	// PLACE STONE AT MAP
+	// -----------------------------------------------------------
+
 	confirmPickupLocation() {}
 
-	ionViewWillEnter() {
-		//console.log("willEnter-stone.page");
+	placeStone() {
+		//this.location = this.newMarker.getLatLng();
+		var lat = this.newMarker.getLatLng().lat;
+		var lng = this.newMarker.getLatLng().lng;
+		L.marker([lat, lng], {
+			//50.597068799999995, 5.6131584000000005
+			icon: this.smallIcon,
+		}).addTo(this.map);
 	}
 
-	ionViewDidEnter() {
-		console.log("didEnter-stone.page");
-		this.loadLocateMap(); // 2- je charge sur "map"
-		console.log(this.DetailsIsActive);
-		if (this.DetailsIsActive === true) {
-			// 3 - si je viens détails, réaffiche moi "stones-list". et donc plus de probleme d'affichage.
-			this.segmentModel = "stones-list";
-			this.DetailsIsActive = false;
-		}
-		//console.log(this.map);
-		console.log(this.segmentModel);
-	}
-
-	ionViewWillLeave() {
-		console.log("willleave-stone.page");
-		//console.log(this.map);
-		this.segmentModel = "map"; // 1 - Quand je sors je reidrige vers map pour qu'au chargement de la map il n'yai pas de probleme graphique
-
-		if (this.map !== undefined) {
-			this.map.remove();
-		} else {
-			//this.map.remove();
-		}
-	}
-
-	// ionViewDidLeave() {
-	// 	this.map.remove();
-	// }
-
-	// ION-SEGMENT (SWITCH)
+	// EVENT ON SEGMENT
+	// ------------------------------------------------------------
 
 	onFilterUpdate(event: CustomEvent<SegmentChangeEventDetail>) {
 		//console.log(event.detail);
@@ -195,6 +222,9 @@ export class StonePage implements OnInit {
 		// 	console.log(event.detail.value);
 		// }
 	}
+
+	// UTILITAIRES
+	// --------------------------------------------------------------
 
 	// Fonction qui permet de d'avoir un boolean pour voir si je viens de la liste quand je vais sur le detail d'une pierre.
 	onStoneDetails() {

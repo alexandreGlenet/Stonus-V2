@@ -54,6 +54,9 @@ export class StoneBagPage implements OnInit {
 	//Segment
 	segmentModel = "bag";
 
+	// CONSTRUCTOR
+	// -------------------------------------------------------------
+
 	constructor(
 		private api: ApiService,
 		private loadingCtrl: LoadingController,
@@ -64,6 +67,9 @@ export class StoneBagPage implements OnInit {
 		private camera: Camera,
 		private transfer: FileTransfer
 	) {}
+
+	// LIFE CYCLE
+	// ----------------------------------------------------------
 
 	ngOnInit() {}
 
@@ -96,63 +102,8 @@ export class StoneBagPage implements OnInit {
 		console.log("didleave stone-bag");
 	}
 
-	// async takePicture() {
-	// 	const image = await Camera.getPhoto({
-	// 		quality: 50,
-	// 		allowEditing: true,
-	// 		resultType: CameraResultType.Uri,
-	// 		source: CameraSource.Camera,
-	// 	});
-	// 	console.log("image: ", image);
-
-	// 	this.photoStone = this.sanitizer.bypassSecurityTrustResourceUrl(
-	// 		image && image.webPath
-	// 	);
-	// }
-
-	// createStone() {
-	// 	//this.onCreate = true;
-	// 	this.stoneForm = this.fb.group({
-	// 		title: ["", Validators.required],
-	// 		description: "",
-	// 		user_id: "",
-	// 		inbag: "",
-	// 	});
-	// }
-
-	validateCreateStone() {
-		this.onCreate = false;
-
-		this.api
-			.validateCreateStone(
-				this.stoneForm.value.title,
-				this.stoneForm.value.description,
-				(this.stoneForm.value.user_id = this.user_id),
-				(this.stoneForm.value.inbag = true)
-			)
-			.subscribe(
-				async (res) => {
-					const toast = await this.toastCtrl.create({
-						message: res["message"],
-						duration: 3000,
-					});
-					toast.present();
-				},
-				(err) => {
-					this.showError(err);
-				}
-			);
-	}
-
-	async showError(err) {
-		const alert = await this.alertCtrl.create({
-			header: err.error.code,
-			subHeader: err.error.data.status,
-			message: err.error.message,
-			buttons: ["OK"],
-		});
-		await alert.present();
-	}
+	// PHOTO - CAMERA - FILE
+	// ----------------------------------------------------------
 
 	getPhoto() {
 		const options: CameraOptions = {
@@ -184,6 +135,60 @@ export class StoneBagPage implements OnInit {
 		let t = this.transfer.create();
 	}
 
+	// async takePicture() {
+	// 	const image = await Camera.getPhoto({
+	// 		quality: 50,
+	// 		allowEditing: true,
+	// 		resultType: CameraResultType.Uri,
+	// 		source: CameraSource.Camera,
+	// 	});
+	// 	console.log("image: ", image);
+
+	// 	this.photoStone = this.sanitizer.bypassSecurityTrustResourceUrl(
+	// 		image && image.webPath
+	// 	);
+	// }
+
+	// CREATE STONE
+	// ----------------------------------------------------
+
+	validateCreateStone() {
+		this.onCreate = false;
+
+		this.api
+			.validateCreateStone(
+				this.stoneForm.value.title,
+				this.stoneForm.value.description,
+				(this.stoneForm.value.user_id = this.user_id),
+				(this.stoneForm.value.inbag = true)
+			)
+			.subscribe(
+				async (res) => {
+					const toast = await this.toastCtrl.create({
+						message: res["message"],
+						duration: 3000,
+					});
+					toast.present();
+				},
+				(err) => {
+					this.showError(err);
+				}
+			);
+	}
+
+	// createStone() {
+	// 	//this.onCreate = true;
+	// 	this.stoneForm = this.fb.group({
+	// 		title: ["", Validators.required],
+	// 		description: "",
+	// 		user_id: "",
+	// 		inbag: "",
+	// 	});
+	// }
+
+	// EVENT ON SEGMENT
+	// -----------------------------------------------------------
+
 	onFilterUpdate(event: CustomEvent<SegmentChangeEventDetail>) {
 		console.log(event.detail);
 		if (event.detail.value == "bag") {
@@ -206,5 +211,18 @@ export class StoneBagPage implements OnInit {
 				inbag: "",
 			});
 		}
+	}
+
+	// UTILITAIRES
+	// -------------------------------------------------------------------
+
+	async showError(err) {
+		const alert = await this.alertCtrl.create({
+			header: err.error.code,
+			subHeader: err.error.data.status,
+			message: err.error.message,
+			buttons: ["OK"],
+		});
+		await alert.present();
 	}
 }
