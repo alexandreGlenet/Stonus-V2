@@ -54,6 +54,7 @@ export class StonePage implements OnInit {
 	stones = [];
 	totalPages = 0;
 	totalStones = 0;
+	stone;
 
 	//Segment
 	segmentModel = "map";
@@ -77,13 +78,13 @@ export class StonePage implements OnInit {
 	ngOnInit() {
 		console.log(this.api.getUserId());
 		console.log(this.api.getUserToken());
-		if (this.api.getCurrentUser() && this.api.getUserToken()) {
-			this.loadStones();
-		}
 	}
 
 	ionViewWillEnter() {
 		console.log("stone.page: willEnter");
+		if (this.api.getCurrentUser() && this.api.getUserToken()) {
+			this.loadStones();
+		}
 	}
 
 	ionViewDidEnter() {
@@ -120,7 +121,7 @@ export class StonePage implements OnInit {
 
 	async loadStones() {
 		let loading = await this.loadingCtrl.create({
-			message: "Loading Stones",
+			message: "Chargement des pierres...", // Loading Stones
 		});
 
 		await loading.present();
@@ -132,6 +133,15 @@ export class StonePage implements OnInit {
 				this.stones = res.stones;
 				this.totalPages = res.totalPages;
 				this.totalStones = res.totalStones;
+
+				//afficher les pierres sur la map
+				for (let stone of this.stones) {
+					if (stone.latitude) {
+						L.marker([stone.latitude, stone.longitude], {
+							icon: this.smallIcon,
+						}).addTo(this.map);
+					}
+				}
 			},
 			(err) => {
 				console.log("errors :", err);

@@ -3,9 +3,10 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, BehaviorSubject, from, of } from "rxjs";
 import { map, switchMap, tap } from "rxjs/operators";
-import { Platform } from "@ionic/angular";
+import { Platform, LoadingController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { ICreationUser } from "../shared/auth.interfaces";
+import * as L from "leaflet";
 
 const JWT_KEY = "my_token";
 
@@ -23,6 +24,21 @@ export class ApiService {
 	currentUser = this.getUserValue();
 	token: string;
 	//currentUserId = this.getUserId();
+
+	map: L.Map;
+
+	smallIcon = new L.Icon({
+		iconUrl: "../../assets/img/rock-1.png",
+		// iconRetinaUrl:
+		// 	"https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-icon-2x.png",
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowUrl:
+			//"https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+			"../../assets/img/rock-shadow.png",
+		shadowSize: [41, 41],
+	});
 
 	// CONSTRUCTOR
 	// --------------------------------------------------------------------
@@ -69,6 +85,10 @@ export class ApiService {
 					for (let stone of data) {
 						if (stone.photo) {
 							stone.photo = stone.photo.sizes["medium"];
+						} else if (stone.latitude) {
+							L.marker([stone.latitude, stone.longitude], {
+								icon: this.smallIcon,
+							}).addTo(this.map);
 						}
 					}
 
