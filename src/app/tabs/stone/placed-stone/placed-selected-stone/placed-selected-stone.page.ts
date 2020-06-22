@@ -168,8 +168,8 @@ export class PlacedSelectedStonePage implements OnInit {
 	validatePlacedStone() {
 		//this.onCreate = false;
 		let id = this.route.snapshot.paramMap.get("id"); // se référe au router :id
-		console.log("STONES ID : ", id);
-		console.log(this.placedStoneForm.value.latitude);
+		//console.log("STONES ID : ", id);
+		//console.log(this.placedStoneForm.value.latitude);
 		this.api
 			.validatePlacedStone(
 				id,

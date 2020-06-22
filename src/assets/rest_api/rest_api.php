@@ -278,6 +278,26 @@ add_action('rest_api_init', function () {
 
     $updated_stone = wp_update_post($stonedata, $stone_id);
 
+    // Pour supprimer la pierre du sac de l'utilisateur
+
+    $user_id = get_current_user_ID();
+    $user_stones_ids =  get_field('bag', 'user_' . $user_id);
+    $user_stones_ids[] = $stone_id;
+
+    if ($user_stones_ids && is_array($user_stones_ids)) {
+        foreach ($user_stones_ids as $data) {
+            $user_stones_ids[] = $data['stone_id'];
+        }
+    }
+
+    if (in_array($stone_id, $user_stones_ids)) {
+        $line = array_search($stone_id, $user_stones_ids);
+        delete_row('bag', $line + 1, 'user_' . $user_id);
+    }
+
+    // Fin de suppression de la pierre du sac
+
+
     return new WP_REST_Response([
         'status' => 200,
         'response' => 'Stone has been updated',
