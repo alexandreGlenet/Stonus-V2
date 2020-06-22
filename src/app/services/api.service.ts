@@ -160,7 +160,7 @@ export class ApiService {
 	// PLACED STONE
 	// ---------------------------------------------------------------------------
 
-	validatePlacedStone(latitude, longitude, inbag) {
+	validatePlacedStone(id, latitude, longitude, inbag) {
 		// -- safety, todo form validation
 		if (
 			!latitude ||
@@ -172,26 +172,32 @@ export class ApiService {
 		}
 
 		let options = {
-			observe: "response" as "body",
+			//observe: "response" as "body",
 
 			headers: new HttpHeaders({
-				// "Content-Type": "application/json; charset=utf-8",
+				"Content-Type": "application/json; charset=utf-8",
 				Authorization: "Bearer " + this.getUserToken(),
 			}),
 		};
 
-		console.log("Resgister Stone: ", latitude, longitude, inbag);
+		console.log("Updating Stone: ", latitude, longitude, inbag);
 
-		const placedStoneData = new FormData();
-		placedStoneData.append("latitude", latitude);
-		placedStoneData.append("longitude", longitude);
-		//postData.append("createur", user_id);
-		placedStoneData.append("inbag", inbag);
-		//postData.append("photo", photoStone);
-		//console.log(postData);
-		return this.http.post(
-			`${environment.stonusUrl}/stones/add`,
-			placedStoneData,
+		// const placedStoneData = new FormData();
+
+		// placedStoneData.append("latitude", latitude);
+		// placedStoneData.append("longitude", longitude);
+		// placedStoneData.append("inbag", inbag);
+
+		// LE FORMDATA APPEND NE FONCTIONNE PAS AVEC LE PUT ICI JE DOIS LE RENVOYER SOUS FORMAT JSON
+		const Datata = {
+			latitude: latitude,
+			longitude: longitude,
+			inbag: inbag,
+		};
+
+		return this.http.put(
+			`${environment.authUrl}/stonus/v1/stones/${id}`,
+			Datata,
 			options
 		);
 	}

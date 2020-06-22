@@ -167,18 +167,22 @@ export class PlacedSelectedStonePage implements OnInit {
 	// --------------------------------------------------------------------------------------
 	validatePlacedStone() {
 		//this.onCreate = false;
-
+		let id = this.route.snapshot.paramMap.get("id"); // se référe au router :id
+		console.log("STONES ID : ", id);
+		console.log(this.placedStoneForm.value.latitude);
 		this.api
 			.validatePlacedStone(
+				id,
 				this.placedStoneForm.value.latitude,
 				this.placedStoneForm.value.longitude,
-				(this.placedStoneForm.value.inbag = true)
+				this.placedStoneForm.value.inbag
 			)
 			.subscribe(
 				async (res) => {
 					const toast = await this.toastCtrl.create({
-						message: res["message"],
+						message: "Votre Pierre a bien été placée !",
 						duration: 3000,
+						position: "top",
 					});
 					toast.present();
 				},
@@ -195,7 +199,7 @@ export class PlacedSelectedStonePage implements OnInit {
 		this.placedStoneForm.setValue({
 			latitude: this.newMarker.getLatLng().lat,
 			longitude: this.newMarker.getLatLng().lng,
-			inbag: false,
+			inbag: 0,
 		});
 		// this.placedStoneForm.value.latitude = this.newMarker.getLatLng().lat;
 		// this.placedStoneForm.value.longitude = this.newMarker.getLatLng().lng;
