@@ -16,3 +16,10 @@ ion-item {
         font-weight: 500;
     }
 }
+
+/* css to customize Leaflet default styles  */
+.custom .leaflet-popup-tip,
+.custom .leaflet-popup-content-wrapper {
+    background: #e93434;
+    color: #ffffff;
+}

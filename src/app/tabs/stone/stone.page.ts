@@ -49,6 +49,11 @@ export class StonePage implements OnInit {
 		}
 	);
 
+	customOptions = {
+		maxWidth: "500",
+		className: "custom",
+	};
+
 	//Stones-list
 	page = 1;
 	stones = [];
@@ -137,9 +142,20 @@ export class StonePage implements OnInit {
 				//afficher les pierres sur la map
 				for (let stone of this.stones) {
 					if (stone.latitude) {
-						L.marker([stone.latitude, stone.longitude], {
+						const markerStone = L.marker([stone.latitude, stone.longitude], {
 							icon: this.smallIcon,
 						}).addTo(this.map);
+						const txt = `
+						<style>.leaflet-popup-content {
+								width:unset;
+								display: table;
+								}
+								.leaflet-popup-content-wrapper{
+									display: table-cell;
+								}
+						</style>
+						<ion-button>coucou ${stone.title}</ion-button>`;
+						markerStone.bindPopup(txt);
 					}
 				}
 			},
