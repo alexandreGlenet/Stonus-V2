@@ -36,6 +36,7 @@ export class StonePage implements OnInit {
 			//"https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
 			"../../assets/img/rock-shadow.png",
 		shadowSize: [41, 41],
+		//forceZIndex: 99,
 	});
 
 	mainLayer = L.tileLayer(
@@ -152,7 +153,9 @@ export class StonePage implements OnInit {
 					if (stone.latitude) {
 						this.markerStone = L.marker([stone.latitude, stone.longitude], {
 							icon: this.smallIcon,
-						}).addTo(this.map);
+						})
+							.setZIndexOffset(1000)
+							.addTo(this.map);
 						const txt = `
 						<style>.leaflet-popup-content {
 								width:unset;
@@ -166,9 +169,18 @@ export class StonePage implements OnInit {
 						<ion-button>coucou ${stone.title}</ion-button>
 						`;
 						this.markerStone.bindPopup(txt); //.openPopup()
-						this.markerStone.on("click", () => {
-							console.log(stone.id);
-						});
+						// this.markerStone.on("click", () => {
+						// 	console.log(stone.id);
+						// });
+						this.distance = this.getDistance(
+							[this.newMarker.getLatLng().lat, this.newMarker.getLatLng().lng],
+							[stone.latitude, stone.longitude]
+						);
+						if (this.distance < 15) {
+							this.markerStone.on("click", () => {
+								console.log(stone.id);
+							});
+						}
 					}
 				}
 				// avant pas encore bon : console.log(this.positionLocation());
@@ -207,6 +219,7 @@ export class StonePage implements OnInit {
 			.on("locationfound", (e: any) => {
 				var radius = e.accuracy / 2;
 				this.newMarker = L.marker([e.latitude, e.longitude], {
+					//forceZIndex: 90,
 					draggable: false,
 				}).addTo(this.map);
 				// Recupérer la position du marqueur
@@ -251,13 +264,16 @@ export class StonePage implements OnInit {
 				[this.newMarker.getLatLng().lat, this.newMarker.getLatLng().lng],
 				[stone.latitude, stone.longitude]
 			);
-			//this.distance = this.distance * 100000;
+			// je regle la distance d'approche d'une pierre pour pouvoir intéragir avec.
 			if (stone.latitude && this.distance < 15) {
 				//1500 = 15 metre
 				// 10 millions 3
-				if ((this.getPositionLocation = this.markerStone.getLatLng())) {
-					console.log("coucou");
-				}
+				//if ((this.getPositionLocation = this.markerStone.getLatLng())) {
+				console.log("coucou");
+				this.markerStone.on("click", () => {
+					console.log(stone.id);
+				});
+				//}
 			}
 			//var distance = getDistance([lat1, lng1], [lat2, lng2])
 		}
