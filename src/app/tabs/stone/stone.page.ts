@@ -20,6 +20,10 @@ export class StonePage implements OnInit {
 	map: L.Map;
 	newMarker: any;
 	location: string[];
+	position: any;
+	getPositionLocation;
+	markerStone;
+	distance;
 
 	smallIcon = new L.Icon({
 		iconUrl: "../../assets/img/rock-1.png",
@@ -53,6 +57,8 @@ export class StonePage implements OnInit {
 		maxWidth: "500",
 		className: "custom",
 	};
+
+	//getcoucou = this.coucou();
 
 	//Stones-list
 	page = 1;
@@ -95,6 +101,7 @@ export class StonePage implements OnInit {
 	ionViewDidEnter() {
 		console.log("stone.page: didEnter");
 		this.loadLocateMap(); // 2- je charge sur "map"
+		//console.log(this.positionLocation());
 		console.log(this.DetailsIsActive);
 		if (this.DetailsIsActive === true) {
 			// 3 - si je viens détails, réaffiche moi "stones-list". et donc plus de probleme d'affichage.
@@ -103,6 +110,7 @@ export class StonePage implements OnInit {
 		}
 		//console.log(this.map);
 		console.log(this.segmentModel);
+		console.log(this.position);
 	}
 
 	ionViewWillLeave() {
@@ -142,7 +150,7 @@ export class StonePage implements OnInit {
 				//afficher les pierres sur la map
 				for (let stone of this.stones) {
 					if (stone.latitude) {
-						const markerStone = L.marker([stone.latitude, stone.longitude], {
+						this.markerStone = L.marker([stone.latitude, stone.longitude], {
 							icon: this.smallIcon,
 						}).addTo(this.map);
 						const txt = `
@@ -154,10 +162,16 @@ export class StonePage implements OnInit {
 									display: table-cell;
 								}
 						</style>
-						<ion-button>coucou ${stone.title}</ion-button>`;
-						markerStone.bindPopup(txt);
+						
+						<ion-button>coucou ${stone.title}</ion-button>
+						`;
+						this.markerStone.bindPopup(txt); //.openPopup()
+						this.markerStone.on("click", () => {
+							console.log(stone.id);
+						});
 					}
 				}
+				// avant pas encore bon : console.log(this.positionLocation());
 			},
 			(err) => {
 				console.log("errors :", err);
@@ -166,6 +180,10 @@ export class StonePage implements OnInit {
 				loading.dismiss();
 			}
 		);
+	}
+
+	coucou() {
+		console.log(this.stone.id);
 	}
 
 	// POSITION - MAP
@@ -183,7 +201,7 @@ export class StonePage implements OnInit {
 				setView: true,
 				minZoom: 6,
 				maxZoom: 19,
-				//watch: true,
+				watch: true,
 				enableHighAccuracy: true,
 			})
 			.on("locationfound", (e: any) => {
@@ -192,8 +210,8 @@ export class StonePage implements OnInit {
 					draggable: false,
 				}).addTo(this.map);
 				// Recupérer la position du marqueur
-				const position = this.newMarker.getLatLng();
-				console.log(position);
+				this.position = this.newMarker.getLatLng();
+				console.log(this.position); //bon
 				// {lat: 50.5876328, lng: 5.6089782} => Noomia
 				this.newMarker
 					.bindPopup("Je suis à !!!" + radius + " metres de ce point")
@@ -202,7 +220,7 @@ export class StonePage implements OnInit {
 				L.circle([e.latitude, e.longitude], radius).addTo(this.map);
 
 				this.newMarker.on("dragend", () => {
-					const position = this.newMarker.getLatLng();
+					this.position = this.newMarker.getLatLng();
 				});
 			})
 			.on("locationError", (e: any) => {
@@ -225,7 +243,54 @@ export class StonePage implements OnInit {
 	// PLACE STONE AT MAP
 	// -----------------------------------------------------------
 
-	confirmPickupLocation() {}
+	confirmPickupLocation() {
+		this.getPositionLocation = this.newMarker.getLatLng().lat;
+		for (let stone of this.stones) {
+			// En mettant le this.distance avant je l'ai en metres que si je le met apres je l'ai en millimètre bizarre....
+			this.distance = this.getDistance(
+				[this.newMarker.getLatLng().lat, this.newMarker.getLatLng().lng],
+				[stone.latitude, stone.longitude]
+			);
+			//this.distance = this.distance * 100000;
+			if (stone.latitude && this.distance < 15) {
+				//1500 = 15 metre
+				// 10 millions 3
+				if ((this.getPositionLocation = this.markerStone.getLatLng())) {
+					console.log("coucou");
+				}
+			}
+			//var distance = getDistance([lat1, lng1], [lat2, lng2])
+		}
+	}
+
+	// GET THE DISTANCE ORIGIN TO DESTINATION
+	// ----------------------------------------------------------------------------------------------------
+	//essais pour calculer la distance
+	getDistance(origin, destination) {
+		// retour en millimetres
+		// return distance in meters
+		var lon1 = this.toRadian(origin[1]),
+			lat1 = this.toRadian(origin[0]),
+			lon2 = this.toRadian(destination[1]),
+			lat2 = this.toRadian(destination[0]);
+
+		var deltaLat = lat2 - lat1;
+		var deltaLon = lon2 - lon1;
+
+		var a =
+			Math.pow(Math.sin(deltaLat / 2), 2) +
+			Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
+		var c = 2 * Math.asin(Math.sqrt(a));
+		var EARTH_RADIUS = 6371;
+		return c * EARTH_RADIUS * 1000;
+	}
+	toRadian(degree) {
+		return (degree * Math.PI) / 180;
+	}
+	//var distance = getDistance([lat1, lng1], [lat2, lng2])
+
+	// FIN DES DEUX FONCTIONS POUR CALCULER LA DISTANCE ENTRE 2 POINTS -----------------------------
+	// -------------------------------------------------------------------------------------------------------
 
 	placeStone() {
 		//this.location = this.newMarker.getLatLng();
