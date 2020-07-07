@@ -222,6 +222,55 @@ export class ApiService {
 		);
 	}
 
+	// FIND STONE
+	// --------------------------------------------------------------------------------------------
+
+	validateFindStone(id, FindStoneLat, FindStoneLong, FindStoneInbag) {
+		if (
+			FindStoneLat ||
+			FindStoneLong
+			// !photoStone
+		) {
+			console.log("error finding, missing elements");
+			return of(null);
+		}
+
+		let options = {
+			//observe: "response" as "body",
+
+			headers: new HttpHeaders({
+				"Content-Type": "application/json; charset=utf-8",
+				Authorization: "Bearer " + this.getUserToken(),
+			}),
+		};
+
+		console.log(
+			"Updating Finding Stone: ",
+			FindStoneLat,
+			FindStoneLong,
+			FindStoneInbag
+		);
+
+		// const placedStoneData = new FormData();
+
+		// placedStoneData.append("latitude", latitude);
+		// placedStoneData.append("longitude", longitude);
+		// placedStoneData.append("inbag", inbag);
+
+		// LE FORMDATA APPEND NE FONCTIONNE PAS AVEC LE PUT ICI JE DOIS LE RENVOYER SOUS FORMAT JSON
+		const DataFindStone = {
+			latitude: FindStoneLat,
+			longitude: FindStoneLong,
+			inbag: FindStoneInbag,
+		};
+
+		return this.http.put(
+			`${environment.authUrl}/stonus/v1/take-stones/${id}`,
+			DataFindStone,
+			options
+		);
+	}
+
 	// USERS
 	// ---------------------------------------------------------------------------------------------
 

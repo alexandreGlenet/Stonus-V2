@@ -33,6 +33,10 @@ const routes: Routes = [
 		loadChildren: () =>
 			import("./pages/pages.module").then((m) => m.PagesPageModule),
 	},
+  {
+    path: 'stone-found',
+    loadChildren: () => import('./modals/stone-found/stone-found.module').then( m => m.StoneFoundPageModule)
+  },
 ];
 
 @NgModule({

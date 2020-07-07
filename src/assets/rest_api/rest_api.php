@@ -51,6 +51,15 @@ add_action('rest_api_init', function () {
         },
     ));
 
+    // TAKE STONE   =>     PUT
+    register_rest_route('stonus/v1', 'take-stones/(?P<stone_id>\d+)', array(
+        'methods' => 'PUT',
+        'callback' => 'alx_take_stone',
+        'permission_callback' => function ($request) {
+            return is_user_logged_in();
+        },
+    ));
+
     // USERS  ---------------------------------------------------------------
 
     // GET USERS
@@ -278,6 +287,7 @@ add_action('rest_api_init', function () {
 
     $updated_stone = wp_update_post($stonedata, $stone_id);
 
+    // Donc quand on pose la pierre du sac sur la map,(champ ACf relationnel), elle doit être retirée du sac de l'utilisateur.
     // Pour supprimer la pierre du sac de l'utilisateur
 
     $user_id = get_current_user_ID();
@@ -295,7 +305,76 @@ add_action('rest_api_init', function () {
         delete_row('bag', $line + 1, 'user_' . $user_id);
     }
 
+    // if($new_inbag == 1) {
+    //     update_field('bag', $user_stones_ids, 'user_' . $user_id);
+        // $line = array_search($stone_id, $user_stones_ids);
+        // delete_row('bag', $line + 2, 'user_' . $user_id);
+    // }
+    
+//    $stonedata = get_post($stone_id);
+//     $return = [
+//         'stone_id' => $stone_id,
+//         'title' => get_the_title($stone_id),
+//         'description' => $stonedata->description,
+//         'photo' => $stonedata->photo,
+//         'createur' => $stonedata->createur_id,
+//         'inbag' => $stonedata->inbag
+//     ];
+
+   // return new WP_REST_Response($return, 200);
+
+
     // Fin de suppression de la pierre du sac
+
+
+    return new WP_REST_Response([
+        'status' => 200,
+        'response' => 'Stone has been updated',
+        'body_response' => $updated_stone,
+    ]);
+
+    // TAKE STONE
+    // --------------------------------------------------------------------
+
+    }
+
+     function alx_take_stone(WP_REST_Request $request){
+
+        //$stonedata = [];
+        $params = $request->get_params();
+        $stone_id = isset($params['stone_id']) ? esc_sql($params['stone_id']) : null;
+
+        $stonedata = get_post($stone_id);
+
+        $new_latitude = isset($params['latitude']) ? $params['latitude'] : null;
+        $new_longitude = isset($params['longitude']) ? $params['longitude'] : null;
+        $new_inbag = isset($params['inbag']) ? $params['inbag'] : null;
+
+        $stonedata = [
+        'ID'        => $stone_id,
+        'latitude'  => $new_latitude,
+        'longitude' => $new_longitude,
+        'inbag'     => $new_inbag
+    ];
+
+    $new_latitude !== null ? $stonedata['latitude'] = $new_latitude : null;
+    $new_longitude !== null ? $stonedata['longitude'] = $new_longitude : null;
+    $new_inbag !== null ? $stonedata['inbag'] = $new_inbag : null;
+
+    update_field('latitude', $new_latitude, $stone_id);
+    update_field('longitude', $new_longitude, $stone_id);
+    update_field('inbag', $new_inbag, $stone_id);
+
+    $updated_stone = wp_update_post($stonedata, $stone_id);
+
+    // Donc quand on pose la pierre du sac sur la map,(champ ACf relationnel), elle doit être retirée du sac de l'utilisateur.
+    // Pour supprimer la pierre du sac de l'utilisateur
+
+    $user_id = get_current_user_ID();
+    $user_stones_ids =  get_field('bag', 'user_' . $user_id);
+    $user_stones_ids[] = $stone_id;
+
+    update_field('bag', $user_stones_ids, 'user_' . $user_id);
 
 
     return new WP_REST_Response([

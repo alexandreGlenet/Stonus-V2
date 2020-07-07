@@ -1,14 +1,22 @@
 import { Component, OnInit } from "@angular/core";
 import { SegmentChangeEventDetail } from "@ionic/core";
 import { ApiService } from "src/app/services/api.service";
-import { LoadingController, ModalController } from "@ionic/angular";
-import { ChangeDetectorRef } from "@angular/core";
+import {
+	LoadingController,
+	ModalController,
+	AlertController,
+	ToastController,
+} from "@ionic/angular";
+import { ChangeDetectorRef, ElementRef } from "@angular/core";
 
 import * as L from "leaflet";
 //import { antPath } from "leaflet-ant-path";
 import "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 import { getInterpolationArgsLength } from "@angular/compiler/src/render3/view/util";
+import { ActivatedRoute } from "@angular/router";
+import { StoneFoundPage } from "src/app/modals/stone-found/stone-found.page";
+import { FormGroup } from "@angular/forms";
 
 @Component({
 	selector: "app-stone",
@@ -19,11 +27,20 @@ export class StonePage implements OnInit {
 	//Map
 	map: L.Map;
 	newMarker: any;
+	circle: any;
 	location: string[];
 	position: any;
 	getPositionLocation;
 	markerStone;
 	distance;
+	div;
+	stoneId;
+	FindStoneLat: any;
+	FindStoneLong: any;
+	FindStoneInbag: any;
+	//GetAddValueFindStone = this.addValueFindStone();
+
+	FindStoneForm: FormGroup;
 
 	smallIcon = new L.Icon({
 		iconUrl: "../../assets/img/rock-1.png",
@@ -41,8 +58,8 @@ export class StonePage implements OnInit {
 
 	mainLayer = L.tileLayer(
 		"https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png",
-		//http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png
-		//https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png
+		//"http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png",
+		//"https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.pingback",
 		//"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 		{
 			attribution:
@@ -74,6 +91,10 @@ export class StonePage implements OnInit {
 	//Je viens de stone-list
 	DetailsIsActive = false;
 
+	// NOTE A MOI MEME, pour intéragir directement avec une pierre je dois passer par la fonction loadStones
+	// Ou alors penser a faire apparaitre les pierres suivant la distance et quand l'utilisateur est sur
+	// une pierre faire apparaitre un bouton qui déclencherais une fonction indépendante.
+
 	// CONSTRUCTOR
 	// -----------------------------------------------------------------------
 
@@ -81,7 +102,11 @@ export class StonePage implements OnInit {
 		private api: ApiService,
 		private loadingCtrl: LoadingController,
 		private cf: ChangeDetectorRef,
-		private modalCtrl: ModalController
+		private modalCtrl: ModalController,
+		private elementRef: ElementRef,
+		private route: ActivatedRoute,
+		private alertCtrl: AlertController,
+		private toastCtrl: ToastController
 	) {}
 
 	// LIFE CYCLE
@@ -130,6 +155,87 @@ export class StonePage implements OnInit {
 	// 	this.map.remove();
 	// }
 
+	async presentModal() {
+		const modal = await this.modalCtrl.create({
+			component: StoneFoundPage,
+			//cssClass: "my-custom-class",
+		});
+		return await modal.present();
+	}
+
+	async presentAlert() {
+		const alert = await this.alertCtrl.create({
+			cssClass: "my-custom-class",
+			header: "Prendre la pierre",
+			subHeader: "As-tu trouvés la pierre ?",
+			message: "This is an <strong>alert message</strong>.",
+			buttons: [
+				{
+					text: "Cancel",
+					role: "cancel",
+					cssClass: "warning",
+					handler: (blah) => {
+						//this.addValueFindStone();
+					},
+				},
+				{
+					text: "Okay",
+					//role: "cancel",
+					cssClass: "success",
+					handler: () => {
+						this.addValueFindStone();
+						this.validateFindStone();
+					},
+				},
+			],
+		});
+
+		await alert.present();
+		let result = await alert.onDidDismiss();
+		console.log(result);
+	}
+
+	addValueFindStone() {
+		this.FindStoneLat = null;
+		this.FindStoneLong = null;
+		this.FindStoneInbag = 1;
+
+		// this.FindStoneForm.value.latitude = this.newMarker.getLatLng().lat;
+		// this.FindStoneForm.value.longitude = this.newMarker.getLatLng().lng;
+		console.log("latitude: ", this.FindStoneLat);
+		console.log("longitude: ", this.FindStoneLong);
+		console.log("Inbag: ", this.FindStoneInbag);
+	}
+
+	// Validate placed Stone
+	// --------------------------------------------------------------------------------------
+	validateFindStone() {
+		//this.onCreate = false;
+		let id = this.stoneId;
+		//console.log("STONES ID : ", id);
+		//console.log(this.placedStoneForm.value.latitude);
+		this.api
+			.validateFindStone(
+				id,
+				this.FindStoneLat,
+				this.FindStoneLong,
+				this.FindStoneInbag
+			)
+			.subscribe(
+				async (res) => {
+					const toast = await this.toastCtrl.create({
+						message: "Votre Pierre a bien été placée !",
+						duration: 3000,
+						position: "top",
+					});
+					toast.present();
+				},
+				(err) => {
+					this.showError(err);
+				}
+			);
+	}
+
 	// LOAD-STONES
 	// -----------------------------------------------------------------
 
@@ -156,29 +262,55 @@ export class StonePage implements OnInit {
 						})
 							.setZIndexOffset(1000)
 							.addTo(this.map);
-						const txt = `
-						<style>.leaflet-popup-content {
-								width:unset;
-								display: table;
-								}
-								.leaflet-popup-content-wrapper{
-									display: table-cell;
-								}
-						</style>
-						
-						<ion-button>coucou ${stone.title}</ion-button>
-						`;
-						this.markerStone.bindPopup(txt); //.openPopup()
-						// this.markerStone.on("click", () => {
-						// 	console.log(stone.id);
-						// });
+
+						// TECHNIQUE POUR INTERAGIR AVEC UN BOUTON DU bindPopup
+						// ----------------------------------------------------------------------------------------------------------------------------
+						// const txt = `
+						// <style>.leaflet-popup-content {
+						// 		width:unset;
+						// 		display: table;
+						// 		}
+						// 		.leaflet-popup-content-wrapper{
+						// 			display: table-cell;
+						// 		}
+						// </style>
+
+						// <ion-button class="eventPopup">coucou ${stone.title}</ion-button>
+						// `;
+						// const popupOptions = {
+						// 	className: "command",
+						// };
+
+						// Pour chaque pierre posée sur la map je lui ouvre une popup si on clique dessus, qui affiche txt. (probleme avec le bouton ionique l'attribut (click) ne déclenche pas la fonction.)
+						// this.markerStone
+						// 	.bindPopup(txt, popupOptions)
+						// 	.on("popupopen", () => {
+						// 		this.elementRef.nativeElement
+						// 			.querySelector(".eventPopup")
+						// 			.addEventListener("click", (e) => {
+						// 				//this.stoneId = stone.id;
+						// 				this.presentAlert();
+						// 			});
+						// 	});
+
+						// FIN DE TECHNIQUE POUR INTERAGIR AVEC LE bindPopup de Leaflet
+						// ------------------------------------------------------------------------------------------------------------------------------
+						//.openPopup()
+						// Pour chaque pierre posée sur la map si je clique dessus je récupère l'ID.
+						this.markerStone.on("click", () => {
+							//console.log(stone.id);
+							this.stoneId = stone.id;
+							this.presentAlert();
+						});
+
 						this.distance = this.getDistance(
 							[this.newMarker.getLatLng().lat, this.newMarker.getLatLng().lng],
 							[stone.latitude, stone.longitude]
 						);
-						if (this.distance < 15) {
+						if (this.distance < 1500) {
 							this.markerStone.on("click", () => {
-								console.log(stone.id);
+								//this.stoneId = stone.id; //console.log(stone.id);
+								//this.coucou();
 							});
 						}
 					}
@@ -193,9 +325,8 @@ export class StonePage implements OnInit {
 			}
 		);
 	}
-
 	coucou() {
-		console.log(this.stone.id);
+		console.log(this.stoneId);
 	}
 
 	// POSITION - MAP
@@ -217,7 +348,16 @@ export class StonePage implements OnInit {
 				enableHighAccuracy: true,
 			})
 			.on("locationfound", (e: any) => {
+				// if => si map.locate est en watch true, quand il me relocalise il me rajoute un marker a chaque fois,
+				// donc ici j'essaie de supprimer ce marker pour n'avoir qu'un seul marker d'utilisateur.
+				//this.newMarker = this.newMarker;
 				var radius = e.accuracy / 2;
+				if (this.map.hasLayer(this.newMarker)) {
+					console.log(this.newMarker);
+					this.map.removeLayer(this.newMarker);
+					this.map.removeLayer(this.circle);
+				}
+
 				this.newMarker = L.marker([e.latitude, e.longitude], {
 					//forceZIndex: 90,
 					draggable: false,
@@ -230,11 +370,15 @@ export class StonePage implements OnInit {
 					.bindPopup("Je suis à !!!" + radius + " metres de ce point")
 					.openPopup();
 
-				L.circle([e.latitude, e.longitude], radius).addTo(this.map);
+				this.circle = L.circle([e.latitude, e.longitude], radius).addTo(
+					this.map
+				);
 
 				this.newMarker.on("dragend", () => {
 					this.position = this.newMarker.getLatLng();
 				});
+
+				// Je pose le marker
 			})
 			.on("locationError", (e: any) => {
 				alert(e.message);
@@ -248,6 +392,12 @@ export class StonePage implements OnInit {
 	}
 
 	loadLocateMap() {
+		// let loading = await this.loadingCtrl.create({
+		// 	message: "Chargement de la localisation...", // Loading Stones
+		// });
+
+		// await loading.present();
+
 		this.map = new L.Map("mapId").setView([50.64, 5.576], 16);
 		this.mainLayer.addTo(this.map);
 		this.locatePosition();
@@ -270,9 +420,6 @@ export class StonePage implements OnInit {
 				// 10 millions 3
 				//if ((this.getPositionLocation = this.markerStone.getLatLng())) {
 				console.log("coucou");
-				this.markerStone.on("click", () => {
-					console.log(stone.id);
-				});
 				//}
 			}
 			//var distance = getDistance([lat1, lng1], [lat2, lng2])
@@ -338,5 +485,15 @@ export class StonePage implements OnInit {
 	// Fonction qui permet de d'avoir un boolean pour voir si je viens de la liste quand je vais sur le detail d'une pierre.
 	onStoneDetails() {
 		this.DetailsIsActive = true;
+	}
+
+	async showError(err) {
+		const alert = await this.alertCtrl.create({
+			header: err.error.code,
+			subHeader: err.error.data.status,
+			message: err.error.message,
+			buttons: ["OK"],
+		});
+		await alert.present();
 	}
 }
