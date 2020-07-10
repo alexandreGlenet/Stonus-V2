@@ -7,6 +7,9 @@ export const environment = {
 	authUrl: "https://stonus.dev/wp-json",
 	apiUrl: "https://stonus.dev/wp-json/wp/v2",
 	stonusUrl: "https://stonus.dev/wp-json/stonus/v1",
+	mapbox: {
+		accessToken: "METTEZ VOTRE JETON ICI",
+	},
 };
 
 /*

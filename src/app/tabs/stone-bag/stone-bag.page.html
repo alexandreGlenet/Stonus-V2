@@ -21,35 +21,140 @@
     <ion-grid>
       <ion-row class="flex">
         <div *ngFor="let stone of user?.user_stone">
-          <div>
-            <ion-col size="6">
+          <div *ngIf="stone">
+            <ion-col size="4">
               <!-- <ion-list> -->
               <!-- <div class="header">
               <h2>{{ stone.title }}</h2>
             </div> -->
-              <div class="border-color">
-                <div class="border-white">
-                  <a [routerLink]=" ['/', 'tabs' ,'stone-bag','stones', stone.id]">
-                    <ion-avatar>
+              <div class="slot-inventary">
+                <div class="">
+                  <div class="">
+                    <a [routerLink]=" ['/', 'tabs' ,'stone-bag','stones', stone.id]">
+                      <ion-avatar>
 
-                      <img [src]="stone.photo.sizes['medium']" [style.width]="'100%'"
-                        *ngIf="stone.photo.sizes.medium" />
-                      <img src="../../../assets/img/camera.png" [style.width]="'100%'"
-                        *ngIf="!stone.photo.sizes.medium" />
+                        <img [src]="stone.photo.sizes['medium']" [style.width]="'100%'"
+                          *ngIf="stone.photo.sizes.medium" />
+                        <img src="../../../assets/img/camera.png" [style.width]="'100%'"
+                          *ngIf="!stone.photo.sizes.medium" />
 
 
-                    </ion-avatar>
-                  </a>
+                      </ion-avatar>
+                    </a>
 
+                  </div>
                 </div>
               </div>
+
               <!-- </ion-list> -->
             </ion-col>
           </div>
+
         </div>
+        <div *ngFor='let in of counter(12 - user?.user_stone.length) ;let i = index'>
+          <div>
+            <ion-col size="4">
+              <div class="slot-inventary">
+                <div class="">
+                  <div class="">
+                    <ion-avatar>
+                      <img src="../../../assets/img/pierre-2.png" [style.width]="'100%'" />
+                    </ion-avatar>
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </div>
+        </div>
+        <!-- --------------------------------------------------- -->
+        <!-- <div *ngIf="user?.user_stone.length == 2 ">
+          <div>
+            <ion-col size="4">
+              <div class="slot-inventary">
+                <div class="">
+                  <div class="">
+                    <ion-avatar>
+                      <img src="../../../assets/img/pierre-2.png" [style.width]="'100%'" />
+                    </ion-avatar>
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </div>
+
+        </div> -->
+        <!-- ---------------------------------------------------------------- -->
+
+        <!-- --------------------------------------------------- -->
+        <!-- <div *ngIf="user?.user_stone.length == 1 ">
+          <div>
+            <ion-col size="4">
+              <div class="slot-inventary">
+                <div class="">
+                  <div class="">
+                    <ion-avatar>
+                      <img src="../../../assets/img/pierre-2.png" [style.width]="'100%'" />
+                    </ion-avatar>
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </div>
+
+        </div> -->
+        <!-- ---------------------------------------------------------------- -->
+
+        <!-- --------------------------------------------------- -->
+        <!-- <div *ngIf="user?.user_stone.length == 1 ">
+          <div>
+            <ion-col size="4">
+              <div class="slot-inventary">
+                <div class="">
+                  <div class="">
+                    <ion-avatar>
+                      <img src="../../../assets/img/pierre-2.png" [style.width]="'100%'" />
+                    </ion-avatar>
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </div>
+
+        </div> -->
+        <!-- ---------------------------------------------------------------- -->
+
+
+        <!-- <div>
+          <ion-col size="6">
+            <div class="slot-inventary">
+              <div class="">
+                <div class="">
+                  <ion-avatar>
+                    <img src="../../../assets/img/pierre-2.png" [style.width]="'100%'" />
+                  </ion-avatar>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </div> -->
+
       </ion-row>
+      <!-- <ion-row *ngIf="!user?.user_stone">
+        <ion-col>
+          <div>
+            <img src="../../../assets/img/pierro.png" alt="">
+          </div>
+        </ion-col>
+      </ion-row> -->
     </ion-grid>
+    <div *ngIf="user?.user_stone == 0">
+      <p>Tu te trouves dans ton sac de pierres, c'est ici que tu pourras stocker les pierres que tu trouves, où que tu
+        crées.</p>
+      <p>Pour créer une pierre clique sur le bouton "+" plus bas.</p>
+      <img src="../../../assets/img/pierro.png" alt="">
+    </div>
   </div>
+
   <!-- CREATE STONE FORM -->
   <!-- ---------------------------------------------------------------------------------------- -->
   <div *ngIf="segmentModel === 'create-stone'">

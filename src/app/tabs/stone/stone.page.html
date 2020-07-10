@@ -7,7 +7,11 @@
 <ion-content>
 	<!-- SEGMENT -->
 	<!-- -------------------------------------------------------------------------------- -->
-	<ion-segment value="map" (ionChange)="onFilterUpdate($event)" [(ngModel)]="segmentModel">
+	<ion-segment
+		value="map"
+		(ionChange)="onFilterUpdate($event)"
+		[(ngModel)]="segmentModel"
+	>
 		<ion-segment-button value="map">
 			<ion-label>Stones's map</ion-label>
 		</ion-segment-button>
@@ -34,17 +38,26 @@
 				<ion-card-content>
 					<img [src]="stone.photo" *ngIf="stone.photo" class="post-img" />
 					<!-- <div [innerHTML]="stone.excerpt.rendered"></div> -->
-					<ion-button expand="full" fill="clear" [routerLink]="['/', 'tabs','stone','stones', stone.id]"
-						text-right (click)="onStoneDetails()">Read More...</ion-button>
+					<ion-button
+						expand="full"
+						fill="clear"
+						[routerLink]="['/', 'tabs','stone','stones', stone.id]"
+						text-right
+						(click)="onStoneDetails()"
+						>Read More...</ion-button
+					>
 				</ion-card-content>
 			</div>
-
 		</ion-card>
 	</div>
 	<!-- STONE-MAP -->
 	<!-- --------------------------------------------------------------------------------------- -->
 	<!-- Regarder commment implémenter les [leafletOptions] dans le div de la map -->
-	<div class="" id="mapId" [ngClass]="{ 'hide': segmentModel != 'map' }"></div>
+	<div
+		class="mapboxgl-map"
+		id="mapId"
+		[ngClass]="{ 'hide': segmentModel != 'map' }"
+	></div>
 
 	<!-- ---------------------------------------------------------------------------------------- -->
 	<!-- FOOTER WITH BUTTON FOR PLACE STONE -->
@@ -54,7 +67,11 @@
 			<ion-grid>
 				<ion-row>
 					<ion-col>
-						<ion-button shape="round" expand="block" routerLink="/tabs/stone/placed-stone">Place a stone !
+						<ion-button
+							shape="round"
+							expand="block"
+							routerLink="/tabs/stone/placed-stone"
+							>Place a stone !
 						</ion-button>
 					</ion-col>
 					<ion-col size="12">
@@ -67,7 +84,10 @@
 					</ion-col>
 
 					<ion-col size="12">
-						<ion-item style="cursor: pointer;" (click)="confirmPickupLocation()">
+						<ion-item
+							style="cursor: pointer;"
+							(click)="confirmPickupLocation()"
+						>
 							<ion-button fill="clear">
 								<ion-icon slot="start" name="map"></ion-icon>
 								Position Marker
@@ -79,11 +99,13 @@
 						<ion-item>
 							<ion-icon slot="start" name="locate"></ion-icon>
 							<ion-label position="stacked">Location</ion-label>
-							<ion-textarea [(ngModel)]="location" type="text" style="margin-top: 20px;"></ion-textarea>
+							<ion-textarea
+								[(ngModel)]="location"
+								type="text"
+								style="margin-top: 20px;"
+							></ion-textarea>
 						</ion-item>
 					</ion-col>
-
-
 				</ion-row>
 			</ion-grid>
 		</div>

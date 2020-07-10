@@ -49,6 +49,8 @@ export class StoneBagPage implements OnInit {
 	newMarker: any;
 	address: string[];
 
+	userStoneLength: any;
+
 	user = null;
 
 	//Segment
@@ -72,6 +74,10 @@ export class StoneBagPage implements OnInit {
 	// ----------------------------------------------------------
 
 	ngOnInit() {}
+
+	counter(i: number, u = this.userStoneLength) {
+		return new Array(i);
+	}
 
 	ionViewWillEnter() {
 		//console.log("willEnter");

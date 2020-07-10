@@ -9,6 +9,11 @@ body,
     //display: initial;
     height: 81%;
     width: 100%;
+
+}
+
+.mapboxgl-map {
+    overflow: hidden;
 }
 
 .hide {

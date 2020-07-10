@@ -38,6 +38,7 @@ export class StonePage implements OnInit {
 	FindStoneLat: any;
 	FindStoneLong: any;
 	FindStoneInbag: any;
+	stoneIsFinded: boolean;
 	//GetAddValueFindStone = this.addValueFindStone();
 
 	FindStoneForm: FormGroup;
@@ -57,15 +58,17 @@ export class StonePage implements OnInit {
 	});
 
 	mainLayer = L.tileLayer(
-		"https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png",
+		"https://api.mapbox.com/styles/v1/alexandreglenet/ckcejm9mm0zyc1intuti37pry/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYWxleGFuZHJlZ2xlbmV0IiwiYSI6ImNrYXh2MTNibTAzZ2Uyem1pM204ZmRlMmgifQ.mT8THO0ylcMa2VwJSKmczA",
+		//"https://api.mapbox.com/styles/v1/alexandreglenet/ckcejm9mm0zyc1intuti37pry.html?fresh=true&title=copy&access_token=pk.eyJ1IjoiYWxleGFuZHJlZ2xlbmV0IiwiYSI6ImNrYXh2MTNibTAzZ2Uyem1pM204ZmRlMmgifQ.mT8THO0ylcMa2VwJSKmczA",
+		//"https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png",
 		//"http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png",
 		//"https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.pingback",
 		//"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 		{
 			attribution:
 				'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY- SA</a>',
-			minZoom: 4,
-			maxZoom: 18,
+			minZoom: 16,
+			maxZoom: 21,
 			//tileSize: 512,
 			//zoomOffset: -1,
 		}
@@ -118,15 +121,18 @@ export class StonePage implements OnInit {
 	}
 
 	ionViewWillEnter() {
-		console.log("stone.page: willEnter");
-		if (this.api.getCurrentUser() && this.api.getUserToken()) {
-			this.loadStones();
-		}
+		// if (this.api.getCurrentUser() && this.api.getUserToken()) {
+		// 	this.loadStones();
+		// }
 	}
 
 	ionViewDidEnter() {
 		console.log("stone.page: didEnter");
 		this.loadLocateMap(); // 2- je charge sur "map"
+		console.log("stone.page: willEnter");
+		if (this.api.getCurrentUser() && this.api.getUserToken()) {
+			this.loadStones();
+		}
 		//console.log(this.positionLocation());
 		console.log(this.DetailsIsActive);
 		if (this.DetailsIsActive === true) {
@@ -176,6 +182,8 @@ export class StonePage implements OnInit {
 					cssClass: "warning",
 					handler: (blah) => {
 						//this.addValueFindStone();
+						//this.stoneIsFinded = false;
+						this.notRemoveMarkerStone();
 					},
 				},
 				{
@@ -185,6 +193,7 @@ export class StonePage implements OnInit {
 					handler: () => {
 						this.addValueFindStone();
 						this.validateFindStone();
+						this.removeMarkerStone();
 					},
 				},
 			],
@@ -229,6 +238,7 @@ export class StonePage implements OnInit {
 						position: "top",
 					});
 					toast.present();
+					//this.loadStones();
 				},
 				(err) => {
 					this.showError(err);
@@ -327,6 +337,18 @@ export class StonePage implements OnInit {
 	}
 	coucou() {
 		console.log(this.stoneId);
+	}
+
+	removeMarkerStone() {
+		this.stoneIsFinded = true;
+		if ((this.stoneIsFinded = true)) {
+			this.map.removeLayer(this.markerStone);
+			this.stoneIsFinded = false;
+		}
+	}
+
+	notRemoveMarkerStone() {
+		this.stoneIsFinded = false;
 	}
 
 	// POSITION - MAP
