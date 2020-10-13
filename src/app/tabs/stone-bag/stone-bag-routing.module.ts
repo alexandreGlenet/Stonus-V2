@@ -22,10 +22,13 @@ const routes: Routes = [
 				(m) => m.StoneUpdatePageModule
 			),
 	},
-  {
-    path: 'stone-bag-details',
-    loadChildren: () => import('./stone-bag-details/stone-bag-details.module').then( m => m.StoneBagDetailsPageModule)
-  },
+	{
+		path: "stone-bag-details/:id",
+		loadChildren: () =>
+			import("./stone-bag-details/stone-bag-details.module").then(
+				(m) => m.StoneBagDetailsPageModule
+			),
+	},
 ];
 
 @NgModule({
