@@ -67,7 +67,7 @@ export class StonePage implements OnInit {
 		{
 			attribution:
 				'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY- SA</a>',
-			minZoom: 16,
+			minZoom: 10, //16
 			maxZoom: 21,
 			//tileSize: 512,
 			//zoomOffset: -1,
