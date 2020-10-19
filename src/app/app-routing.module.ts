@@ -12,7 +12,7 @@ const routes: Routes = [
 		path: "",
 		loadChildren: () =>
 			import("./tabs/tabs.module").then((m) => m.TabsPageModule),
-		//canLoad: [AuthentifictionGuard],
+		//canLoad: [AuthentifictionGuard], a priori pas celui-ci a enlever pour éviter le rechargement de auth mais dans tabs-routing.module
 	},
 	{
 		path: "authentification",
@@ -33,10 +33,13 @@ const routes: Routes = [
 		loadChildren: () =>
 			import("./pages/pages.module").then((m) => m.PagesPageModule),
 	},
-  {
-    path: 'stone-found',
-    loadChildren: () => import('./modals/stone-found/stone-found.module').then( m => m.StoneFoundPageModule)
-  },
+	{
+		path: "stone-found",
+		loadChildren: () =>
+			import("./modals/stone-found/stone-found.module").then(
+				(m) => m.StoneFoundPageModule
+			),
+	},
 ];
 
 @NgModule({

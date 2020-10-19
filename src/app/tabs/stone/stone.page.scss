@@ -7,9 +7,10 @@ html,
 body,
 #mapId {
     //display: initial;
-    height: 81%;
+    height: 84%;
     width: 100%;
-
+    //padding: 10px;
+    // margin: 10px;
 }
 
 .mapboxgl-map {
@@ -38,4 +39,8 @@ body,
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     min-width: 200px;
+}
+
+.hidden {
+    display: none;
 }

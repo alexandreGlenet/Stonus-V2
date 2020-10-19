@@ -10,4 +10,26 @@
 
 <ion-content>
 
+  <div *ngIf="stone">
+    <img [src]="stone.photo" [style.width]="'100%'" *ngIf="stone.photo">
+    <div [innerHTML]="stone.nom"></div>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>
+          Données de la pierre {{ stone.title }}
+        </ion-label>
+      </ion-list-header>
+      <ion-label>
+        <p>Créateur de la pierre : </p>
+      </ion-label>
+      <ion-label>
+        <p>vient de ? : </p>
+      </ion-label>
+      <ion-label>
+        <p>a parcouru autant de kilometres : </p>
+      </ion-label>
+    </ion-list>
+
+  </div>
+
 </ion-content>

@@ -389,7 +389,7 @@ export class StonePage implements OnInit {
 				console.log(this.position); //bon
 				// {lat: 50.5876328, lng: 5.6089782} => Noomia
 				this.newMarker
-					.bindPopup("Je suis à !!!" + radius + " metres de ce point")
+					.bindPopup("Tu es à + ou - " + radius + " metres de ce point")
 					.openPopup();
 
 				this.circle = L.circle([e.latitude, e.longitude], radius).addTo(

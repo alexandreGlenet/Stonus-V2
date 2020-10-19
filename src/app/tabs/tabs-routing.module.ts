@@ -13,7 +13,8 @@ const routes: Routes = [
 				path: "stone",
 				loadChildren: () =>
 					import("./stone/stone.module").then((m) => m.StonePageModule),
-				canLoad: [AuthentifictionGuard],
+				//ici pour empecher le rechargement de AuthentificationGuard
+				// canLoad: [AuthentifictionGuard],
 			},
 			{
 				path: "stone-bag",
@@ -21,13 +22,15 @@ const routes: Routes = [
 					import("./stone-bag/stone-bag.module").then(
 						(m) => m.StoneBagPageModule
 					),
-				canLoad: [AuthentifictionGuard],
+				//ici pour empecher le rechargement de AuthentificationGuard
+				// canLoad: [AuthentifictionGuard],
 			},
 			{
 				path: "profile",
 				loadChildren: () =>
 					import("./profile/profile.module").then((m) => m.ProfilePageModule),
-				canLoad: [AuthentifictionGuard],
+				//ici pour empecher le rechargement de AuthentificationGuard
+				// canLoad: [AuthentifictionGuard],
 			},
 			{
 				path: "", // redirection pour les cas ou places/tabs

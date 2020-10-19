@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="hidden">
   <ion-toolbar>
     <ion-title>Mon sac de pierres</ion-title>
   </ion-toolbar>
@@ -9,10 +9,10 @@
   <!-- --------------------------------------------------------------------------------- -->
   <ion-segment value="bag" (ionChange)="onFilterUpdate($event)" [(ngModel)]="segmentModel">
     <ion-segment-button value="bag">
-      <ion-label>Stones's bag</ion-label>
+      <ion-label>Ton Sac</ion-label>
     </ion-segment-button>
     <ion-segment-button value="create-stone">
-      <ion-label>Create-Stone</ion-label>
+      <ion-label>Ajoute une pierre</ion-label>
     </ion-segment-button>
   </ion-segment>
   <!-- STONES-LIST-BAG -->
@@ -58,7 +58,7 @@
                 <div class="">
                   <div class="">
                     <ion-avatar>
-                      <img src="../../../assets/img/pierre-2.png" [style.width]="'100%'" />
+                      <!-- <img src="../../../assets/img/case-vide.png" [style.width]="'100%'" /> -->
                     </ion-avatar>
                   </div>
                 </div>

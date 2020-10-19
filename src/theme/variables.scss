@@ -2,6 +2,8 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+@import "fonts";
+
 :root {
   --ion-color-primary: #DE4849;
   --ion-color-primary-rgb: 222, 72, 73;
@@ -70,6 +72,7 @@
 
   --ion-toolbar-background: var(--ion-color-primary);
   --ion-toolbar-color: var(--ion-color-primary-contrast);
+  --ion-font-family: "Arial-Rounded", serif !important;
 }
 
 @media (prefers-color-scheme: dark) {
