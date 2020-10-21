@@ -222,6 +222,48 @@ export class ApiService {
 		);
 	}
 
+	// CHANGE AVATAR
+
+	validateChangeAvatar(id, data) {
+		// -- safety, todo form validation
+		if (!data) {
+			console.log("error creation, missing elements");
+			return of(null);
+		}
+
+		let options = {
+			//observe: "response" as "body",
+
+			headers: new HttpHeaders({
+				// "Content-Type": "application/json; charset=utf-8",
+				// "Content-Disposition": "filename=name-of-file.jpg",
+				Authorization: "Bearer " + this.getUserToken(),
+			}),
+		};
+
+		console.log("Updating User: ", data);
+
+		// const placedStoneData = new FormData();
+
+		// placedStoneData.append("latitude", latitude);
+		// placedStoneData.append("longitude", longitude);
+		// placedStoneData.append("inbag", inbag);
+
+		const photoData = {
+			photo: data,
+		};
+		// const photoData = new FormData();
+		// photoData.append("photo", data);
+		// longitude: longitude,
+		// inbag: inbag,
+
+		return this.http.put(
+			`${environment.authUrl}/stonus/v1/users/${id}`,
+			photoData,
+			options
+		);
+	}
+
 	// FIND STONE
 	// --------------------------------------------------------------------------------------------
 
@@ -320,7 +362,7 @@ export class ApiService {
 			.pipe(
 				map((user) => {
 					if (user.photo) {
-						user.photo = user.photo.sizes["medium"];
+						//user.photo = user.photo.sizes["medium"];
 					}
 					// else {
 					// 	user.photo.sizes["medium"] = "../assets/img/no-image.jpg";

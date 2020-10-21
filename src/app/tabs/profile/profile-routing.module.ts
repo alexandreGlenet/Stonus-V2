@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'profile-lists',
     loadChildren: () => import('./profile-lists/profile-lists.module').then( m => m.ProfileListsPageModule)
+  },
+  {
+    path: 'change-avatar',
+    loadChildren: () => import('./change-avatar/change-avatar.module').then( m => m.ChangeAvatarPageModule)
   }
 ];
 

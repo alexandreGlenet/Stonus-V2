@@ -3,8 +3,12 @@ ion-avatar {
     width: 12rem;
 }
 
+.profile-content {
+    --background: linear-gradient(to top, #FBCF75, #04DEA8) !important;
+}
+
 .header {
-    background-color: var(--ion-color-primary-shade);
+    //background-color: var(--ion-color-primary-shade);
     height: 12rem;
     padding-top: 1px;
 }
@@ -24,13 +28,24 @@ ion-avatar {
 }
 
 .border-color {
+    z-index: 15;
     border: 7px solid var(--ion-color-primary);
     border-radius: 50%;
     width: fit-content;
 }
 
-.flex {
+.profil-photo {
+    //z-index: 15;
     display: flex;
     justify-content: center;
     margin-top: -6rem;
+}
+
+.profil-list {
+    z-index: 10;
+    margin-top: -50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 20px;
+    border-radius: 4px;
 }

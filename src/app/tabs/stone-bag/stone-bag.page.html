@@ -1,92 +1,83 @@
 <ion-header class="hidden">
-  <ion-toolbar>
-    <ion-title>Mon sac de pierres</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>Mon sac de pierres</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- SEGMENT -->
-  <!-- --------------------------------------------------------------------------------- -->
-  <ion-segment value="bag" (ionChange)="onFilterUpdate($event)" [(ngModel)]="segmentModel">
-    <ion-segment-button value="bag">
-      <ion-label>Ton Sac</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="create-stone">
-      <ion-label>Ajoute une pierre</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-  <!-- STONES-LIST-BAG -->
-  <!-- ------------------------------------------------------------------------------------ -->
-  <div *ngIf="segmentModel === 'bag'">
-    <ion-grid>
-      <ion-row class="flex">
-        <div *ngFor="let stone of user?.user_stone">
-          <div *ngIf="stone">
-            <ion-col size="4">
-              <!-- <ion-list> -->
-              <!-- <div class="header">
+	<!-- SEGMENT -->
+	<!-- --------------------------------------------------------------------------------- -->
+	<ion-segment
+		value="bag"
+		(ionChange)="onFilterUpdate($event)"
+		[(ngModel)]="segmentModel"
+	>
+		<ion-segment-button value="bag">
+			<ion-label>Ton Sac</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="create-stone">
+			<ion-label>Ajoute une pierre</ion-label>
+		</ion-segment-button>
+	</ion-segment>
+	<!-- STONES-LIST-BAG -->
+	<!-- ------------------------------------------------------------------------------------ -->
+	<div *ngIf="segmentModel === 'bag'">
+		<ion-grid>
+			<h2 class="ion-text-center">Inventaire</h2>
+			<ion-row class="flex">
+				<div *ngFor="let stone of user?.user_stone">
+					<div *ngIf="stone">
+						<ion-col size="4">
+							<!-- <ion-list> -->
+							<!-- <div class="header">
               <h2>{{ stone.title }}</h2>
             </div> -->
-              <div class="slot-inventary">
-                <div class="">
-                  <div class="">
-                    <a [routerLink]=" ['/', 'tabs' ,'stone-bag','stone-bag-details', stone.id]">
-                      <ion-avatar>
+							<div class="slot-inventary">
+								<div class="">
+									<div class="">
+										<a
+											[routerLink]=" ['/', 'tabs' ,'stone-bag','stone-bag-details', stone.id]"
+										>
+											<ion-avatar>
+												<img
+													[src]="stone.photo.sizes['medium']"
+													[style.width]="'100%'"
+													*ngIf="stone.photo.sizes.medium"
+												/>
+												<img
+													src="../../../assets/img/camera.png"
+													[style.width]="'100%'"
+													*ngIf="!stone.photo.sizes.medium"
+												/>
+											</ion-avatar>
+										</a>
+									</div>
+								</div>
+							</div>
 
-                        <img [src]="stone.photo.sizes['medium']" [style.width]="'100%'"
-                          *ngIf="stone.photo.sizes.medium" />
-                        <img src="../../../assets/img/camera.png" [style.width]="'100%'"
-                          *ngIf="!stone.photo.sizes.medium" />
-
-
-                      </ion-avatar>
-                    </a>
-
-                  </div>
-                </div>
-              </div>
-
-              <!-- </ion-list> -->
-            </ion-col>
-          </div>
-
-        </div>
-        <div *ngFor='let in of counter(12 - user?.user_stone.length) ;let i = index'>
-          <div>
-            <ion-col size="4">
-              <div class="slot-inventary">
-                <div class="">
-                  <div class="">
-                    <ion-avatar>
-                      <!-- <img src="../../../assets/img/case-vide.png" [style.width]="'100%'" /> -->
-                    </ion-avatar>
-                  </div>
-                </div>
-              </div>
-            </ion-col>
-          </div>
-        </div>
-        <!-- --------------------------------------------------- -->
-        <!-- <div *ngIf="user?.user_stone.length == 2 ">
-          <div>
-            <ion-col size="4">
-              <div class="slot-inventary">
-                <div class="">
-                  <div class="">
-                    <ion-avatar>
-                      <img src="../../../assets/img/pierre-2.png" [style.width]="'100%'" />
-                    </ion-avatar>
-                  </div>
-                </div>
-              </div>
-            </ion-col>
-          </div>
-
-        </div> -->
-        <!-- ---------------------------------------------------------------- -->
-
-        <!-- --------------------------------------------------- -->
-        <!-- <div *ngIf="user?.user_stone.length == 1 ">
+							<!-- </ion-list> -->
+						</ion-col>
+					</div>
+				</div>
+				<div
+					*ngFor="let in of counter(12 - user?.user_stone.length) ;let i = index"
+				>
+					<div>
+						<ion-col size="4">
+							<div class="slot-inventary">
+								<div class="">
+									<div class="">
+										<ion-avatar>
+											<!-- <img src="../../../assets/img/case-vide.png" [style.width]="'100%'" /> -->
+										</ion-avatar>
+									</div>
+								</div>
+							</div>
+						</ion-col>
+					</div>
+				</div>
+				<!-- --------------------------------------------------- -->
+				<!-- <div *ngIf="user?.user_stone.length == 2 ">
           <div>
             <ion-col size="4">
               <div class="slot-inventary">
@@ -102,10 +93,10 @@
           </div>
 
         </div> -->
-        <!-- ---------------------------------------------------------------- -->
+				<!-- ---------------------------------------------------------------- -->
 
-        <!-- --------------------------------------------------- -->
-        <!-- <div *ngIf="user?.user_stone.length == 1 ">
+				<!-- --------------------------------------------------- -->
+				<!-- <div *ngIf="user?.user_stone.length == 1 ">
           <div>
             <ion-col size="4">
               <div class="slot-inventary">
@@ -121,10 +112,28 @@
           </div>
 
         </div> -->
-        <!-- ---------------------------------------------------------------- -->
+				<!-- ---------------------------------------------------------------- -->
 
+				<!-- --------------------------------------------------- -->
+				<!-- <div *ngIf="user?.user_stone.length == 1 ">
+          <div>
+            <ion-col size="4">
+              <div class="slot-inventary">
+                <div class="">
+                  <div class="">
+                    <ion-avatar>
+                      <img src="../../../assets/img/pierre-2.png" [style.width]="'100%'" />
+                    </ion-avatar>
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </div>
 
-        <!-- <div>
+        </div> -->
+				<!-- ---------------------------------------------------------------- -->
+
+				<!-- <div>
           <ion-col size="6">
             <div class="slot-inventary">
               <div class="">
@@ -137,59 +146,60 @@
             </div>
           </ion-col>
         </div> -->
-
-      </ion-row>
-      <!-- <ion-row *ngIf="!user?.user_stone">
+			</ion-row>
+			<!-- <ion-row *ngIf="!user?.user_stone">
         <ion-col>
           <div>
             <img src="../../../assets/img/pierro.png" alt="">
           </div>
         </ion-col>
       </ion-row> -->
-    </ion-grid>
-    <div *ngIf="user?.user_stone == 0">
-      <p>Tu te trouves dans ton sac de pierres, c'est ici que tu pourras stocker les pierres que tu trouves, où que tu
-        crées.</p>
-      <p>Pour créer une pierre clique sur le bouton "+" plus bas.</p>
-      <img src="../../../assets/img/pierro.png" alt="">
-    </div>
-  </div>
+		</ion-grid>
+		<div *ngIf="user?.user_stone == 0">
+			<p>
+				Tu te trouves dans ton sac de pierres, c'est ici que tu pourras stocker
+				les pierres que tu trouves, où que tu crées.
+			</p>
+			<p>Pour créer une pierre clique sur le bouton "+" plus bas.</p>
+			<img src="../../../assets/img/pierro.png" alt="" />
+		</div>
+	</div>
 
-  <!-- CREATE STONE FORM -->
-  <!-- ---------------------------------------------------------------------------------------- -->
-  <div *ngIf="segmentModel === 'create-stone'">
-    <!-- <div *ngIf="onCreate"> -->
-    <form [formGroup]="stoneForm" (ngSubmit)="validateCreateStone()">
-      <ion-item>
-        <ion-label position="floating">Nom de la Pierre</ion-label>
-        <ion-input formControlName="title"></ion-input>
-      </ion-item>
+	<!-- CREATE STONE FORM -->
+	<!-- ---------------------------------------------------------------------------------------- -->
+	<div *ngIf="segmentModel === 'create-stone'">
+		<!-- <div *ngIf="onCreate"> -->
+		<form [formGroup]="stoneForm" (ngSubmit)="validateCreateStone()">
+			<ion-item>
+				<ion-label position="floating">Nom de la Pierre</ion-label>
+				<ion-input formControlName="title"></ion-input>
+			</ion-item>
 
-      <ion-item>
-        <ion-label position="floating">Description</ion-label>
-        <ion-input formControlName="description"></ion-input>
-      </ion-item>
+			<ion-item>
+				<ion-label position="floating">Description</ion-label>
+				<ion-input formControlName="description"></ion-input>
+			</ion-item>
 
-      <ion-item class="hidden">
-        <ion-input formControlName="user_id"></ion-input>
-      </ion-item>
+			<ion-item class="hidden">
+				<ion-input formControlName="user_id"></ion-input>
+			</ion-item>
 
-      <ion-item class="hidden">
-        <ion-input formControlName="inbag"></ion-input>
-      </ion-item>
+			<ion-item class="hidden">
+				<ion-input formControlName="inbag"></ion-input>
+			</ion-item>
 
-      <!-- <ion-item class="">
+			<!-- <ion-item class="">
 				<ion-label position="">Photo de la pierre</ion-label>
 				<input formControlName="photoStone" />
 			</ion-item> -->
 
-      <!-- <ion-item>
+			<!-- <ion-item>
 				<img [src]="photoStone" style="width: 60px; height: 60px;" />
 			</ion-item> -->
 
-      <!-- <ion-button (click)="takePicture()"></ion-button> -->
+			<!-- <ion-button (click)="takePicture()"></ion-button> -->
 
-      <!-- <img
+			<!-- <img
 				[src]="imageUrl"
 				style="width: 60px; height: 60px;"
 				[hidden]="hideImage"
@@ -197,24 +207,22 @@
 			<ion-button (click)="getPhoto()"></ion-button>
       <ion-button (click)="uploadPhoto()"></ion-button> -->
 
-      <!-- <img formControlName="photoStone" (click)="takePicture()" [src]="photoStone" style="width:60px; height:60px;" /> -->
-      <!-- <ion-item>
+			<!-- <img formControlName="photoStone" (click)="takePicture()" [src]="photoStone" style="width:60px; height:60px;" /> -->
+			<!-- <ion-item>
         <ion-label position="floating">Password</ion-label>
         <ion-input type="password" formControlName="password"></ion-input>
       </ion-item> -->
-      <!-- || !this.photoStone -->
-      <ion-button expand="full" [disabled]="!stoneForm.valid" type="submit">
-        Confirm</ion-button>
-    </form>
-    <!-- </div> -->
-    <!-- fab placed to the bottom end -->
-    <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!onCreate">
+			<!-- || !this.photoStone -->
+			<ion-button expand="full" [disabled]="!stoneForm.valid" type="submit">
+				Confirm</ion-button
+			>
+		</form>
+		<!-- </div> -->
+		<!-- fab placed to the bottom end -->
+		<!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!onCreate">
       <ion-fab-button color="danger" (click)="createStone()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab> -->
-  </div>
-
-
-
+	</div>
 </ion-content>

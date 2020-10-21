@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="hidden">
   <ion-toolbar color="primary">
     <!-- <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/stone/stone-lists"></ion-back-button>
@@ -7,18 +7,20 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="">
+<ion-content class="profile-content">
 
   <div *ngIf="user">
     <!-- <div [innerHTML]="user.photo"></div> -->
     <div class="header">
       <h2>{{ user.fullname }}</h2>
     </div>
-    <div class="flex">
+    <div class="profil-photo">
       <div class="border-color">
         <div class="border-white">
-          <ion-avatar>
-            <img [src]="user.photo" [style.width]="'100%'" *ngIf="user.photo">
+          <ion-avatar button (click)="selectAvatar(user)">
+            <!-- je passe la data user dans le modal -->
+            <!-- [routerLink]="['/', 'tabs','profile','change-avatar']" -->
+            <img [src]="user?.photo.url" [style.width]="'100%'" *ngIf="user.photo">
           </ion-avatar>
         </div>
       </div>
@@ -28,7 +30,7 @@
 
 
     <!-- <div [innerHTML]="user.nom"></div> -->
-    <ion-list>
+    <ion-list class="profil-list">
       <ion-list-header>
 
       </ion-list-header>

@@ -95,6 +95,16 @@ add_action('rest_api_init', function () {
         'callback' => 'alx_create_user',
     ));
 
+    // NEW OCTOBRE 2020
+    // UPDATE USER   =>     PUT
+    register_rest_route('stonus/v1', 'users/(?P<user_id>\d+)', array(
+        'methods' => 'PUT',
+        'callback' => 'alx_update_user',
+        'permission_callback' => function ($request) {
+            return is_user_logged_in();
+        },
+    ));
+
     
 
     // FUNCTIONS -----------------------------------------------------------------------------------------------------------
@@ -332,11 +342,11 @@ add_action('rest_api_init', function () {
         'response' => 'Stone has been updated',
         'body_response' => $updated_stone,
     ]);
-
+    }
     // TAKE STONE
     // --------------------------------------------------------------------
 
-    }
+
 
      function alx_take_stone(WP_REST_Request $request){
 
@@ -406,6 +416,8 @@ add_action('rest_api_init', function () {
                 'prenom' => get_field('first_name', $user),
                 'nom' => get_field('last_name', $user),
                 'photo' => [
+                    'id' => get_field('photo', $user)['ID'],
+                    'url' => get_field('photo', $user)['url'],
                     //'alt' => get_field('photo', $user_id)['alt'],
                     'sizes' => [
                         'thumbnail' => get_field('photo', 'user_' . $user->id)['sizes']['thumbnail'],
@@ -472,6 +484,8 @@ add_action('rest_api_init', function () {
                 'created_at' => $userdata->user_registered,
                 'user_stone' => $user_stones,
                 'photo' => [
+                    'id' => get_field('photo', $userdata)['ID'],
+                    'url' => get_field('photo', $userdata)['url'],
                     //'alt' => get_field('photo', $user_id)['alt'],
                     'sizes' => [
                         'thumbnail' => get_field('photo', 'user_' . $user_id)['sizes']['thumbnail'],
@@ -590,7 +604,51 @@ add_action('rest_api_init', function () {
     return new WP_REST_Response($return, 200);
 }
 
+// PUT USER    - OCTOBRE 2020
+    // --------------------------------------------------------------
 
+    function alx_update_user(WP_REST_Request $request){
+
+        $params = $request->get_params();
+        $user_id = isset($params['user_id']) ? esc_sql($params['user_id']) : null;
+
+        $userdata = get_userdata($user_id);
+
+        $new_photo = isset($params['photo']) ? $params['photo'] : null;
+
+
+        $userdata = [
+        'ID'        => $user_id,
+        'photo' =>  $new_photo,
+                    // 'sizes' => [
+                    //     'thumbnail' => get_field('photo', 'user_' . $user->id)['sizes']['thumbnail'],
+                    //     'medium' => get_field('photo', 'user_' . $user->id)['sizes']['medium'],
+                    // ],
+                
+                //'bag' => get_field('acf', $stone)['bag'],
+
+        ];
+
+    $new_photo !== null ? $userdata['photo'] = $new_photo : null;
+
+
+    update_field('photo', $new_photo, 'user_' . $user_id);
+
+
+    $updated_user = wp_update_user($userdata, $user_id);
+
+    if (is_wp_error($updated_user)) {
+        $errors->add('unknow', 'An error has occurred');
+    }
+
+
+    return new WP_REST_Response([
+        'status' => 200,
+        'response' => 'User has been updated',
+        'body_response' => $updated_user,
+    ]);
+
+    }
 
 
 
