@@ -9,6 +9,7 @@
 
   <ion-grid>
 
+    <!-- LES INPUTS HIDDENS & BOUTONS -->
     <ion-item class="hidden">
       <ion-input [formControl]="photoInput"></ion-input>
     </ion-item>
@@ -17,37 +18,52 @@
     </ion-item>
     <ion-button [disabled]="photoInput.invalid" expand="full" (click)="validateChangeAvatar()">Valider mon avatar
     </ion-button>
-    <ion-row>
 
-      <ion-col>
+    <!-- LES AVATARS -->
+    <!-- ROW 1 -->
+    <ion-row class="ion-justify-content-around">
 
-
+      <ion-col class="avatar-col">
         <ion-item lines="none" (click)="changeAvatar()">
-
           <img src="../../assets/img/avatars/1.png">
         </ion-item>
-
       </ion-col>
 
-      <!-- ESSAYER DE FAIRE DES INPUTS NON VISIBLE DANS UN FORMULAIRE, AVEC
-             LES IMG DES AVATARS EN IMAGE AVEC UNE FONCTION MISE DESSUS QUI MET UN
-             SETVALUE SUR L INPUT ET APRES VALIDATION DU FORMULAIRE VIA UN BOUTON
-             POUR VALIDE RLE FORMULAIRE ET L ENVOIS DU PUT A L API -->
-
-      <ion-col>
+      <ion-col class="avatar-col">
         <ion-item lines="none" (click)="changeAvatar2()">
           <img src="../../assets/img/avatars/2.png">
         </ion-item>
       </ion-col>
 
-      <ion-col>
+      <ion-col class="avatar-col">
         <ion-item lines="none" (click)="changeAvatar3()">
           <img src="../../assets/img/avatars/3.png">
         </ion-item>
       </ion-col>
 
     </ion-row>
+    <!-- ROW 2 -->
+    <ion-row>
 
+      <ion-col class="avatar-col">
+        <ion-item lines="none" (click)="changeAvatar4()">
+          <img src="../../assets/img/avatars/4.png">
+        </ion-item>
+      </ion-col>
+
+      <ion-col class="avatar-col">
+        <ion-item lines="none" (click)="changeAvatar5()">
+          <img src="../../assets/img/avatars/5.png">
+        </ion-item>
+      </ion-col>
+
+      <ion-col class="avatar-col">
+        <ion-item lines="none" (click)="changeAvatar6()">
+          <img src="../../assets/img/avatars/6.png">
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
 
     <!-- </form> -->
   </ion-grid>

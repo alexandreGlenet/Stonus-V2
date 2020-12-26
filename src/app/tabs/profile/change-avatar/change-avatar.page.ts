@@ -32,11 +32,17 @@ export class ChangeAvatarPage implements OnInit {
 	photo1 = 242;
 	photo2 = 248;
 	photo3 = 247;
+	photo4 = 246;
+	photo5 = 249;
+	photo6 = 250;
 
 	// URl des photo uniquement pour le front car probleme avec la récupération de l'url via l'id dans le html.
 	photoUrl1 = "https://stonus.dev/wp-content/uploads/2020/10/1.png";
 	photoUrl2 = "https://stonus.dev/wp-content/uploads/2020/10/2.png";
 	photoUrl3 = "https://stonus.dev/wp-content/uploads/2020/10/3.png";
+	photoUrl4 = "https://stonus.dev/wp-content/uploads/2020/10/4.png";
+	photoUrl5 = "https://stonus.dev/wp-content/uploads/2020/10/5.png";
+	photoUrl6 = "https://stonus.dev/wp-content/uploads/2020/10/6.png";
 
 	constructor(
 		private route: ActivatedRoute,
@@ -101,6 +107,33 @@ export class ChangeAvatarPage implements OnInit {
 		});
 		this.photoInputUrl.setValue({
 			photoInputUrl: this.photoUrl3,
+		});
+	}
+
+	changeAvatar4() {
+		this.photoInput.setValue({
+			photoInput: this.photo4,
+		});
+		this.photoInputUrl.setValue({
+			photoInputUrl: this.photoUrl4,
+		});
+	}
+
+	changeAvatar5() {
+		this.photoInput.setValue({
+			photoInput: this.photo5,
+		});
+		this.photoInputUrl.setValue({
+			photoInputUrl: this.photoUrl5,
+		});
+	}
+
+	changeAvatar6() {
+		this.photoInput.setValue({
+			photoInput: this.photo6,
+		});
+		this.photoInputUrl.setValue({
+			photoInputUrl: this.photoUrl6,
 		});
 	}
 

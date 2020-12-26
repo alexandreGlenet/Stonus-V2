@@ -30,11 +30,15 @@
 
 
     <!-- <div [innerHTML]="user.nom"></div> -->
+
     <ion-list class="profil-list">
-      <ion-list-header>
+      <ion-list-header class="profil-list-header">
+        <ion-label class="ion-text-center">
+          <p>LEVEL 11</p>
+        </ion-label>
 
       </ion-list-header>
-      <ion-label>
+      <!-- <ion-label>
         <p>Prénom : {{ user.prenom }}</p>
       </ion-label>
       <ion-label>
@@ -45,9 +49,13 @@
       </ion-label>
       <ion-label>
         <p>E-mail : {{ user.email }}</p>
-      </ion-label>
-      <ion-label>
-        <p>Date de création : {{ user.created_at }}</p>
+      </ion-label> -->
+      <ion-label class="ion-text-center">
+        <p>A commençé l'aventure:</p>
+
+        <ion-datetime displayFormat="D MMMM, YYYY" [value]="user.created_at"
+          monthNames='janvier, février, mars, avril, mai, juin, juillet, aout, septembre, octobre, novembre, décembre'>
+        </ion-datetime>
       </ion-label>
 
       <!-- <ion-label>
