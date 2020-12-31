@@ -141,7 +141,7 @@ export class ApiService {
 	// CREATE STONE
 	// -------------------------------------------------------------------------------------------
 
-	validateCreateStone(title, description, user_id, inbag) {
+	validateCreateStone(title, description, user_id, inbag, uploaded_photo) {
 		// -- safety, todo form validation
 		if (
 			!title ||
@@ -160,15 +160,18 @@ export class ApiService {
 				Authorization: "Bearer " + this.getUserToken(),
 			}),
 		};
-
-		console.log("Resgister Stone: ", title, description, user_id, inbag);
-
+		//uploaded_photo.name = title
+		console.log("Register Stone: ", title, description, user_id, inbag, uploaded_photo);
+		const photo = [uploaded_photo, uploaded_photo.name];
 		const postData = new FormData();
 		postData.append("title", title);
 		postData.append("description", description);
 		postData.append("createur", user_id);
 		postData.append("inbag", inbag);
-		//postData.append("photo", photoStone);
+		// Essais photo
+		
+		postData.append("photo", uploaded_photo, uploaded_photo.name );
+		console.log( uploaded_photo );
 		//console.log(postData);
 		return this.http.post(
 			`${environment.stonusUrl}/stones/add`,

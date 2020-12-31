@@ -136,6 +136,7 @@ add_action('rest_api_init', function () {
                 'inbag' => get_field('inbag', $stone),
                 'photo' => [
                     'alt' => get_field('photo', $stone)['alt'],
+                    'name' => get_field('photo', $stone)['name'],
                     'sizes' => [
                         'thumbnail' => get_field('photo', $stone)['sizes']['thumbnail'],
                         'medium' => get_field('photo', $stone)['sizes']['medium'],
@@ -174,6 +175,7 @@ add_action('rest_api_init', function () {
                 'inbag' => get_field('inbag', $stone_id),
                 'photo' => [
                     'alt' => get_field('photo', $stone_id)['alt'],
+                    'name' => get_field('photo', $stone_id)['name'],
                     'sizes' => [
                         'thumbnail' => get_field('photo', $stone_id)['sizes']['thumbnail'],
                         'medium'    => get_field('photo', $stone_id)['sizes']['medium'],
@@ -201,7 +203,8 @@ add_action('rest_api_init', function () {
     $longitude = isset($params['longitude']) ? $params['longitude'] : null;
     $description = isset($params['description']) ? $params['description'] : null;
     $createur_id = isset($params['createur']) ? $params['createur'] : null;
-    $photo = isset($params['photo']) ? $params['photo'] : null;
+    // Attention pour les photos on utilise $_FILES et non $params
+    $photo = isset($_FILES["photo"]) ? $_FILES["photo"] : null;
     $inbag = isset($params['inbag']) ? $params['inbag'] : null;
     //return $photo;
     //return $_FILES;
@@ -213,8 +216,21 @@ add_action('rest_api_init', function () {
     //     $attach_id = media_handle_upload($file_handler,$pid );
         
     // }
+
+    // Validation des données si besoin
+    // if( !$title || $title == '' ) {
+    //     $errors->add('empty', 'Title is required');
+    // }
+	// if( !$photo ) {
+    //     $errors->add('empty', 'Photo is required');
+    // }
+
+    // if( !empty( $errors->get_error_codes() ) ) {
+    //     return $errors;
+    // }
+
     
-    
+    // --> Create Stone
     //return $request;
     $stone_id = wp_insert_post([
         'post_type' => 'stones',
@@ -225,12 +241,19 @@ add_action('rest_api_init', function () {
             'description' => $description,
             'latitude' => $latitude,
             'longitude' => $longitude,
-            'photo' => $photo,
+            //'photo' => $photo,
             'createur' => $createur_id,
             'inbag' => $inbag,
         ]
         
     ]);
+
+    /**
+	 * Add media
+	 */
+	add_new_image($photo, $stone_id);
+
+
 
     // Apres la création de la pierre je dois l'afficher le sac de l'utilisateur.
     // Donc je dois recuperer l'id de l'utilisateur ( get_current_user_ID ne fonction qu'avec le permission callback )
@@ -263,6 +286,55 @@ add_action('rest_api_init', function () {
     ];
 
     return new WP_REST_Response($return, 200);
+}
+
+    // ADD IMAGE
+
+    function add_new_image($file, $stone_id)
+{
+	require_once(ABSPATH . 'wp-admin/includes/file.php');
+
+	// Get the path to the upload directory.
+	$wp_upload_dir = wp_upload_dir();
+	$file['name'] = preg_replace( '/[^0-9a-zA-Z.]/', '', basename( $file['name'] ) );
+
+	// Upload the file
+	$upload_result = wp_handle_upload( $file, array('test_form' => FALSE) ); // test_form c'est quoi ?
+	error_log( serialize( $upload_result ) );
+
+	if( $upload_result['url'] ) {
+
+		// Prepare an array of post data for the attachment.
+		$attachment = array(
+			'guid'           => $upload_result['url'],
+			'post_mime_type' => $file['type'],
+			'post_title'     => $file['name'],
+			'post_content'   => '',
+			'post_status'    => 'inherit'
+		);
+
+
+		$attach_id = wp_insert_attachment( $attachment, $upload_result['file'], $stone_id );
+
+		if( $attach_id ) {
+			// add in post ACF meta
+			update_field('photo', $attach_id, $stone_id);
+
+			$response['result'] = true;
+			$response['message'] = "Image added";
+		}
+		else {
+			$response['result'] = false;
+			$response['message'] = "Wordpress attachment post could not created.";
+		}
+
+	}
+	else {
+		$response['result'] = false;
+		$response['message'] = "The file couldn't be uploaded. Check the permissions.";
+	}
+
+	return $response;
 }
 
     // PUT STONE
@@ -463,6 +535,7 @@ add_action('rest_api_init', function () {
                 'inbag' => get_field('inbag', $user_stone),
                 'photo' => [
                     'alt' => get_field('photo', $user_stone)['alt'],
+                    'name' => get_field('photo', $user_stone)['name'],
                     'sizes' => [
                         'thumbnail' => get_field('photo', $user_stone)['sizes']['thumbnail'],
                         'medium' => get_field('photo', $user_stone)['sizes']['medium'],

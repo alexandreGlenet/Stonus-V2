@@ -188,17 +188,53 @@
 				<ion-input formControlName="inbag"></ion-input>
 			</ion-item>
 
+			<ion-item>
+				<!-- <ion-label>Photo</ion-label> -->
+				<ion-input type="file" formControlName="photoStone" (change)="onFileChange($event)"></ion-input>
+				<!-- <ion-input formControlName="photoStone" accept="image/*" ></ion-input> -->
+			</ion-item>
+
 			<!-- <ion-item class="">
 				<ion-label position="">Photo de la pierre</ion-label>
 				<input formControlName="photoStone" />
 			</ion-item> -->
 
-			<!-- <ion-item>
-				<img [src]="photoStone" style="width: 60px; height: 60px;" />
-			</ion-item> -->
-
+			<!-- Bouton pour prendre la photo -->
 			<!-- <ion-button (click)="takePicture()"></ion-button> -->
 
+			<!-- Aperçu de la photo -->
+			<ion-item>
+				<img [src]="photoStone" style="width: 60px; height: 60px;" />
+			</ion-item>
+
+			<!-- Essais photo -->
+			<!-- Essayer de créer un input avec la donnée de la photo pour pouvoir la push dans Wordpress -->
+			<!-- <ion-item>
+				<ion-input type=file formControlName="photoStone">{{ this.photoStone }}</ion-input>
+			</ion-item> -->
+
+
+			<!-- Essais Loic Method -->
+
+			<!-- <form (ngSubmit)="postForm()" method="post" enctype="multipart/form-data"> -->
+				<!-- <ion-item>
+					<ion-label>Titre</ion-label>
+					<ion-input type="text" [(ngModel)]="title" name="title"></ion-input>
+				</ion-item> -->
+
+				<!-- <ion-item>
+					<ion-label>Photo</ion-label>
+					<ion-input type="file" [(ngModel)]="photo" (change)="onFileChange($event)" name="photo"></ion-input>
+				</ion-item> -->
+
+				
+
+				<!-- <button ion-button type="submit" block>Add new post</button> -->
+			<!-- </form> -->
+
+			
+
+			<!-- Cordova system -->
 			<!-- <img
 				[src]="imageUrl"
 				style="width: 60px; height: 60px;"
@@ -207,6 +243,7 @@
 			<ion-button (click)="getPhoto()"></ion-button>
       <ion-button (click)="uploadPhoto()"></ion-button> -->
 
+	  <!-- Not Cordova system -->
 			<!-- <img formControlName="photoStone" (click)="takePicture()" [src]="photoStone" style="width:60px; height:60px;" /> -->
 			<!-- <ion-item>
         <ion-label position="floating">Password</ion-label>
