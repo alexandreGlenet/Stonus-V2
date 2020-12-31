@@ -204,7 +204,7 @@
 
 			<!-- Aperçu de la photo -->
 			<ion-item>
-				<img [src]="photoStone" style="width: 60px; height: 60px;" />
+				<img *ngIf="img1" [src]="img1" style="width: 60px; height: 60px;" />
 			</ion-item>
 
 			<!-- Essais photo -->

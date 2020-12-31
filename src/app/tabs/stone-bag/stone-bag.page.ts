@@ -47,8 +47,9 @@ export class StoneBagPage implements OnInit {
 	// photoStoneType = null;
 	// photoStoneDataUrl : any;
 	// photoStoneFormat : any;
-	// photoStoneBlob : any;
+	 photoStoneBlob : any;
 	// photoStoneFile : any;
+	img1 : any;
 	user_id = this.api.getUserId();
 
 	//Map
@@ -245,7 +246,19 @@ export class StoneBagPage implements OnInit {
 	onFileChange(event) {
 		const photoStone = event.target.files[0];
 		this.uploaded_photo = photoStone;
-		//console.log(photoStone);
+		console.log(this.uploaded_photo);
+		// pour rendre l'image lisible directement dans la balise img, une preview
+		if (event.target.files && event.target.files[0]) {
+    		let reader = new FileReader();
+    		reader.onload = (event:any) => {
+    		  this.img1 = event.target.result;
+    		}
+    		reader.readAsDataURL(event.target.files[0]);  // to trigger onload
+  		}
+  
+  		let fileList: FileList = event.target.files;  
+  		let file: File = fileList[0];
+  		console.log(file);
 	}
 
 
