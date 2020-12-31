@@ -217,7 +217,7 @@ export class StoneBagPage implements OnInit {
 		// Ici je redéclare la const uploaded_photo que je re transforme en file donc peut etre pas nécessaire de le faire dans TakePicture.
 		//const uploaded_photo = new File([this.photoStoneImage], `${photoTitle}-photo`, {type: "image/"+photoType, lastModified: Date.now()});
 		// const uploaded_photo = this.photoStoneFile;
-
+		console.log(this.uploaded_photo);
 		this.api
 			.validateCreateStone(
 				this.stoneForm.value.title,
@@ -258,7 +258,7 @@ export class StoneBagPage implements OnInit {
   
   		let fileList: FileList = event.target.files;  
   		let file: File = fileList[0];
-  		console.log(file);
+  		//console.log(file);
 	}
 
 

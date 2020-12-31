@@ -4,10 +4,10 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="fond-sac">
 	<!-- SEGMENT -->
 	<!-- --------------------------------------------------------------------------------- -->
-	<ion-segment
+	<ion-segment class="fond-blanc"
 		value="bag"
 		(ionChange)="onFilterUpdate($event)"
 		[(ngModel)]="segmentModel"
@@ -23,8 +23,9 @@
 	<!-- ------------------------------------------------------------------------------------ -->
 	<div *ngIf="segmentModel === 'bag'">
 		<ion-grid>
-			<h2 class="ion-text-center">Inventaire</h2>
-			<ion-row class="flex">
+			<h2 class="ion-text-center Titre-Tab-Page fond-gris padding-margin">Inventaire</h2>
+			<div class="fond-gris padding-margin">
+				<ion-row class="flex">
 				<div *ngFor="let stone of user?.user_stone">
 					<div *ngIf="stone">
 						<ion-col size="4">
@@ -38,18 +39,18 @@
 										<a
 											[routerLink]=" ['/', 'tabs' ,'stone-bag','stone-bag-details', stone.id]"
 										>
-											<ion-avatar>
-												<img
+											<div class="photo-inventaire">
+												<img class="mask"
 													[src]="stone.photo.sizes['medium']"
 													[style.width]="'100%'"
 													*ngIf="stone.photo.sizes.medium"
 												/>
-												<img
+												<img class="mask"
 													src="../../../assets/img/camera.png"
 													[style.width]="'100%'"
 													*ngIf="!stone.photo.sizes.medium"
 												/>
-											</ion-avatar>
+											</div>
 										</a>
 									</div>
 								</div>
@@ -147,6 +148,8 @@
           </ion-col>
         </div> -->
 			</ion-row>
+			</div>
+			
 			<!-- <ion-row *ngIf="!user?.user_stone">
         <ion-col>
           <div>
