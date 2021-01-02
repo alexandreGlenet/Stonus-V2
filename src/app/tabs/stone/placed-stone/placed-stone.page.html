@@ -1,43 +1,78 @@
-<ion-header>
+<ion-header class="white">
   <ion-toolbar>
-    <ion-title>Choisis une pierre</ion-title>
+    <ion-title>Choisis une pierre dans ton sac</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/stone"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="fond-sac">
 
-  <ion-grid>
-    <ion-row class="flex">
-      <div *ngFor="let stone of user?.user_stone">
-        <div>
-          <ion-col size="6">
-            <!-- <ion-list> -->
-            <!-- <div class="header">
+  
+  <!-- STONES-LIST-BAG -->
+	<!-- ------------------------------------------------------------------------------------ -->
+	
+		<ion-grid>
+			<h2 class="ion-text-center Titre-Tab-Page fond-gris padding-margin">Inventaire</h2>
+			<div class="fond-gris padding-margin">
+				<ion-row class="flex">
+				<div *ngFor="let stone of user?.user_stone">
+					<div *ngIf="stone">
+						<ion-col size="4">
+							<!-- <ion-list> -->
+							<!-- <div class="header">
               <h2>{{ stone.title }}</h2>
             </div> -->
-            <div class="border-color">
-              <div class="border-white">
-                <a [routerLink]=" ['/', 'tabs' ,'stone','placed-stone', 'stones', stone.id]">
-                  <ion-avatar>
+							<div class="slot-inventary">
+								<div class="">
+									<div class="">
+										<a
+											[routerLink]=" ['/', 'tabs' ,'stone','placed-stone', 'stones', stone.id]"
+										>
+											<div class="photo-inventaire">
+												<img class="mask"
+													[src]="stone.photo.sizes['medium']"
+													[style.width]="'100%'"
+													*ngIf="stone.photo.sizes.medium"
+												/>
+												<img class="mask"
+													src="../../../assets/img/camera.png"
+													[style.width]="'100%'"
+													*ngIf="!stone.photo.sizes.medium"
+												/>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
 
-                    <img [src]="stone.photo.sizes['medium']" [style.width]="'100%'" *ngIf="stone.photo.sizes.medium" />
-                    <img src="../../../assets/img/camera.png" [style.width]="'100%'"
-                      *ngIf="!stone.photo.sizes.medium" />
-
-
-                  </ion-avatar>
-                </a>
-
-              </div>
-            </div>
-            <!-- </ion-list> -->
-          </ion-col>
-        </div>
-      </div>
-    </ion-row>
-  </ion-grid>
+							<!-- </ion-list> -->
+						</ion-col>
+					</div>
+				</div>
+				<div
+					*ngFor="let in of counter(12 - user?.user_stone.length) ;let i = index"
+				>
+					<div>
+						<ion-col size="4">
+							<div class="slot-inventary">
+								<div class="">
+									<div class="">
+										<ion-avatar>
+											<!-- <img src="../../../assets/img/case-vide.png" [style.width]="'100%'" /> -->
+										</ion-avatar>
+									</div>
+								</div>
+							</div>
+						</ion-col>
+					</div>
+				</div>
+				
+			</ion-row>
+			</div>
+			
+			
+		</ion-grid>
 
 </ion-content>

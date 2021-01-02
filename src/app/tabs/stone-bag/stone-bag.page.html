@@ -22,7 +22,7 @@
 	<!-- STONES-LIST-BAG -->
 	<!-- ------------------------------------------------------------------------------------ -->
 	<div *ngIf="segmentModel === 'bag'">
-		<ion-grid>
+		<ion-grid *ngIf="user?.user_stone != 0">
 			<h2 class="ion-text-center Titre-Tab-Page fond-gris padding-margin">Inventaire</h2>
 			<div class="fond-gris padding-margin">
 				<ion-row class="flex">
@@ -158,14 +158,15 @@
         </ion-col>
       </ion-row> -->
 		</ion-grid>
+		<!-- ------------------------------------------------------------------ -->
+		<!-- Si l'utilisateur n'as pas de pierre on affiche un message -->
 		<div *ngIf="user?.user_stone == 0">
-			<p>
-				Tu te trouves dans ton sac de pierres, c'est ici que tu pourras stocker
-				les pierres que tu trouves, où que tu crées.
-			</p>
-			<p>Pour créer une pierre clique sur le bouton "+" plus bas.</p>
-			<img src="../../../assets/img/pierro.png" alt="" />
+			<h2 class="ion-text-center Titre-Tab-Page fond-gris padding-margin">Inventaire</h2>
+			<div class="fond-gris padding-margin">			
+			<img src="../../../assets/img/Bag/Montage-sac.png" alt="" />
+			</div>
 		</div>
+		<!-- ----------------------------------------------------------------------------- -->
 	</div>
 
 	<!-- CREATE STONE FORM -->

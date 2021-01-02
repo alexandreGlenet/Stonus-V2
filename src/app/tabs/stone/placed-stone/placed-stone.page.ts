@@ -43,7 +43,7 @@ export class PlacedStonePage implements OnInit {
 	//PHOTO
 	//photoStone = null;
 	user_id = this.api.getUserId();
-
+	userStoneLength: any;
 	//Map
 	map: L.Map;
 	newMarker: any;
@@ -72,6 +72,10 @@ export class PlacedStonePage implements OnInit {
 	// ----------------------------------------------------------
 
 	ngOnInit() {}
+
+	counter(i: number, u = this.userStoneLength) {
+		return new Array(i);
+	}
 
 	ionViewWillEnter() {
 		//console.log("willEnter");
@@ -102,89 +106,7 @@ export class PlacedStonePage implements OnInit {
 		console.log("placed-stone: didleave");
 	}
 
-	// PHOTO - CAMERA - FILE
-	// ----------------------------------------------------------
-
-	getPhoto() {
-		const options: CameraOptions = {
-			quality: 70,
-			destinationType: this.camera.DestinationType.DATA_URL,
-			sourceType: this.camera.PictureSourceType.CAMERA,
-			allowEdit: false,
-			encodingType: this.camera.EncodingType.PNG,
-			correctOrientation: true,
-			mediaType: this.camera.MediaType.PICTURE,
-			targetWidth: 300,
-			targetHeight: 300,
-		};
-
-		this.camera.getPicture(options).then(
-			(imageData) => {
-				//this.updateUserPicture(imageData);
-				this.imageData = imageData;
-				this.imageUrl = "data:image/png;base64," + imageData;
-				this.hideImage = false;
-			},
-			(error) => {
-				console.log("Error taking picture: " + JSON.stringify(error));
-			}
-		);
-	}
-
-	uploadPhoto() {
-		let t = this.transfer.create();
-	}
-
-	// async takePicture() {
-	// 	const image = await Camera.getPhoto({
-	// 		quality: 50,
-	// 		allowEditing: true,
-	// 		resultType: CameraResultType.Uri,
-	// 		source: CameraSource.Camera,
-	// 	});
-	// 	console.log("image: ", image);
-
-	// 	this.photoStone = this.sanitizer.bypassSecurityTrustResourceUrl(
-	// 		image && image.webPath
-	// 	);
-	// }
-
-	// CREATE STONE
-	// ----------------------------------------------------
-
-	validateCreateStone() {
-		this.onCreate = false;
-
-		this.api
-			.validateCreateStone(
-				this.stoneForm.value.title,
-				this.stoneForm.value.description,
-				(this.stoneForm.value.user_id = this.user_id),
-				(this.stoneForm.value.inbag = true)
-			)
-			.subscribe(
-				async (res) => {
-					const toast = await this.toastCtrl.create({
-						message: res["message"],
-						duration: 3000,
-					});
-					toast.present();
-				},
-				(err) => {
-					this.showError(err);
-				}
-			);
-	}
-
-	// createStone() {
-	// 	//this.onCreate = true;
-	// 	this.stoneForm = this.fb.group({
-	// 		title: ["", Validators.required],
-	// 		description: "",
-	// 		user_id: "",
-	// 		inbag: "",
-	// 	});
-	// }
+	
 
 	// EVENT ON SEGMENT
 	// -----------------------------------------------------------
