@@ -259,7 +259,7 @@ export class StonePage implements OnInit {
 		this.api.getStones(this.page).subscribe(
 			(res) => {
 				console.log("res: ", res);
-
+				
 				this.stones = res.stones;
 				this.totalPages = res.totalPages;
 				this.totalStones = res.totalStones;

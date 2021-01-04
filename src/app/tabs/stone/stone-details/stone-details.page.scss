@@ -1,0 +1,36 @@
+.fond-sac {
+    --background: url(../../../../assets/img/bag/fond-sac.jpg) 0 0/100% 100% no-repeat;
+}
+
+.padding-margin {
+    padding: 5px;
+    margin: 20px;
+}
+
+.fond-gris {
+    //width: 100%;
+    //height: auto;
+    // background: url(../../../assets/img/bag/fond-gris.jpg) 0 0/100% 100% no-repeat;
+    // background-size: contain;
+    background: #032a26a8;
+    box-shadow: inset 0px 0px 11px 4px #0000007d;
+    // mask-image: url(../../../assets/img/bag/fond-gris.svg);
+}
+
+.photo-preview {
+    margin: auto;
+
+}
+
+.mask {
+    mask-image: url(../../../../assets/img/Bag/formask.svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    //background: url(../../../assets/img/Bag/cadre.svg)0 0/100% 100% no-repeat;
+    //overflow: hidden;
+    margin-left: 0.7rem;
+}
+
+.fond-blanc {
+    background: white;
+}

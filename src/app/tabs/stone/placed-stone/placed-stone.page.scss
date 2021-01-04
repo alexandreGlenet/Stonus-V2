@@ -91,6 +91,10 @@ ion-avatar {
     //overflow: hidden;
 }
 
+.img {
+    height: -webkit-fill-available;
+}
+
 .slot-inventary {
     height: auto;
     width: 100%;

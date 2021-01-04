@@ -2,11 +2,21 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// export const environment = {
+// 	production: false,
+// 	authUrl: "https://stonus.dev/wp-json",
+// 	apiUrl: "https://stonus.dev/wp-json/wp/v2",
+// 	stonusUrl: "https://stonus.dev/wp-json/stonus/v1",
+// 	mapbox: {
+// 		accessToken: "METTEZ VOTRE JETON ICI",
+// 	},
+// };
+
 export const environment = {
 	production: false,
-	authUrl: "https://stonus.dev/wp-json",
-	apiUrl: "https://stonus.dev/wp-json/wp/v2",
-	stonusUrl: "https://stonus.dev/wp-json/stonus/v1",
+	authUrl: "https://stonus.alexandre-glenet.be/wp-json",
+	apiUrl: "https://stonus.alexandre-glenet.be/wp-json/wp/v2",
+	stonusUrl: "https://stonus.alexandre-glenet.be/wp-json/stonus/v1",
 	mapbox: {
 		accessToken: "METTEZ VOTRE JETON ICI",
 	},

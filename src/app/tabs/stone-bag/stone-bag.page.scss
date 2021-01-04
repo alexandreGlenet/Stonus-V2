@@ -26,6 +26,27 @@
   // mask-image: url(../../../assets/img/bag/fond-gris.svg);
 }
 
+
+#myFileInput {
+    position: absolute;
+    opacity: 0;
+}
+
+.myFakeUploadButton {
+    /* Whatever you want */
+    color: #FEC66D;
+    text-shadow: 2px 2px 1px #7D3D15;
+    background: linear-gradient(to right, #563A55, #3A2739) !important;
+    padding: 10px;
+    border-radius:28px;
+    border:1px solid#9A7798;
+    box-shadow: 1px 1px 3px 0px #2c2727;
+    padding:12px 76px;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .padding-margin {
     padding: 5px;
     margin: 20px;
@@ -66,12 +87,19 @@
     //clip-path: url(../../../assets/img/Bag/cadre.svg)0 0/100% 100% no-repeat;
 }
 
+
 .photo-inventaire img {
     max-width: 100%;
     border: 0;
     object-fit: cover;
     overflow: hidden;
     //clip-path: url(../../../assets/img/Bag/cadre.svg)0 0/100% 100% no-repeat;
+}
+
+.photo-preview {
+    width: 100%;
+    height: auto;
+    margin: auto;
 }
 
 ion-avatar {
@@ -85,10 +113,25 @@ ion-avatar {
     display: none;
 }
 
+.img {
+    height: -webkit-fill-available;
+}
+
 .mask {
     mask-image: url(../../../assets/img/Bag/formask.svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
     //background: url(../../../assets/img/Bag/cadre.svg)0 0/100% 100% no-repeat;
     //overflow: hidden;
+   // margin-left: 0.7rem;
+}
+
+ion-item {
+    --ion-background-color: transparent;
+}
+
+.label-form {
+    text-shadow: 2px 2px 1px #7D3D15;
 }
 
 .slot-inventary {

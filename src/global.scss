@@ -39,6 +39,11 @@
     --background: linear-gradient(#FBCF75, #04DEA8) !important;
 }
 
+
+
+
+
+
 .button-background-img {
     //font-family: 'Arial-Rounded-Bold' !important;
     font-family: 'Arial-Rounded-ExtraBold' !important;
@@ -75,7 +80,7 @@
 
 .grid-stone-map {
     padding: 0;
-    background: #27282A;
+    --background: url(assets/img/bag/fond-sac.jpg) 0 0/100% 100% no-repeat;
     margin: 0;
 }
 

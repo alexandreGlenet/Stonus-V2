@@ -1,35 +1,59 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar class="fond-blanc">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/stone-bag/"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ stone?.title }}</ion-title>
+    <!-- <ion-title>{{ stone?.title }}</ion-title> -->
+    <ion-title>Retour à l'inventaire</ion-title>
   </ion-toolbar>
 </ion-header>
 <!-- PAGE DE DETAIL D UNE PIERRE QUAND JE SUIS DANS LE SAC PAS DANS LA LISTE -->
 
-<ion-content>
+<ion-content class="fond-sac">
 
-  <div *ngIf="stone">
-    <img [src]="stone.photo" [style.width]="'100%'" *ngIf="stone.photo">
-    <div [innerHTML]="stone.nom"></div>
-    <ion-list>
-      <ion-list-header>
-        <ion-label>
-          Données de la pierre {{ stone.title }}
-        </ion-label>
-      </ion-list-header>
-      <ion-label>
-        <p>Créateur de la pierre : </p>
-      </ion-label>
-      <ion-label>
-        <p>vient de ? : </p>
-      </ion-label>
-      <ion-label>
-        <p>a parcouru autant de kilometres : </p>
-      </ion-label>
-    </ion-list>
-
+  <div class="">
+    <h2 class="ion-text-center Titre-Tab-Page fond-gris padding-margin">{{ stone?.title }}</h2>
   </div>
+
+  <div class="fond-gris padding-margin">   
+        <div *ngIf="stone">
+          <div class="photo-preview">
+            <img [src]="stone.photo" [style.width]="'100%'" *ngIf="stone.photo" class="mask" />
+            <img src="../../../assets/img/rock.png" [style.width]="'100%'" *ngIf="!stone.photo" class="mask" />
+          </div>
+
+          <ion-grid>
+            <ion-item>
+              <ion-label>
+                Nom de la pierre : {{ stone.title }}
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p>Crée par : {{ stone.createurName['name'] }} </p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+               <p> Date de création : le {{ stone.created_at | date:"d MMM, y" }}</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p>Description :{{ stone.description }} </p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p>a parcouru autant de kilometres : </p>
+              </ion-label>
+            </ion-item>
+            
+          </ion-grid>
+
+        </div>
+  </div>
+
+
 
 </ion-content>

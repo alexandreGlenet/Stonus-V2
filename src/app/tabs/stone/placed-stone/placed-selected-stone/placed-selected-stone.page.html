@@ -7,21 +7,17 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="flex">
-    <h1>{{ stone?.title }}</h1>
+<ion-content class="fond-sac">
+  <div class="">
+    <h2 class="ion-text-center Titre-Tab-Page fond-gris padding-margin">{{ stone?.title }}</h2>
   </div>
-  <div class="flex">
-    <div class="border-color">
-      <div class="border-white">
+  <div class="fond-gris padding-margin">   
         <div *ngIf="stone">
-          <ion-avatar>
-            <img [src]="stone.photo" [style.width]="'100%'" *ngIf="stone.photo" />
-            <img src="../../../assets/img/rock.png" [style.width]="'100%'" *ngIf="!stone.photo" />
-          </ion-avatar>
+          <div class="photo-preview">
+            <img [src]="stone.photo" [style.width]="'100%'" *ngIf="stone.photo" class="mask" />
+            <img src="../../../assets/img/rock.png" [style.width]="'100%'" *ngIf="!stone.photo" class="mask" />
+          </div>
         </div>
-      </div>
-    </div>
   </div>
 
 
@@ -42,18 +38,21 @@
       <ion-input formControlName="inbag"></ion-input>
     </ion-item>
 
-    <ion-item style="cursor: pointer;" (click)="addLatLng()">
+    <!-- <ion-item style="cursor: pointer;" (click)="addLatLng()">
       <ion-button fill="clear">
         <ion-icon slot="start" name="map"></ion-icon>
         Je veux mettre ma pierre ici
       </ion-button>
-    </ion-item>
+    </ion-item> -->
 
     <!-- <ion-button expand="full" [disabled]="!stoneForm.valid" type="submit">
       Confirm</ion-button> -->
-    <ion-button shape="round" expand="block" [disabled]="!placedStoneForm.valid" routerLink="/tabs/stone" type="submit">
-      Oui je suis sur !
-    </ion-button>
+    <div class="fond-gris padding-margin">
+      <ion-button  class="monBouton" shape="round" expand="block"  routerLink="/tabs/stone" type="submit">
+      Je cache ma pierre ici !
+      </ion-button>
+    </div>
+    
   </form>
 
 

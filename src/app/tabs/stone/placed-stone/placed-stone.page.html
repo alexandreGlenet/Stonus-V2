@@ -31,12 +31,12 @@
 											[routerLink]=" ['/', 'tabs' ,'stone','placed-stone', 'stones', stone.id]"
 										>
 											<div class="photo-inventaire">
-												<img class="mask"
+												<img class="mask img"
 													[src]="stone.photo.sizes['medium']"
 													[style.width]="'100%'"
 													*ngIf="stone.photo.sizes.medium"
 												/>
-												<img class="mask"
+												<img class="mask img"
 													src="../../../assets/img/camera.png"
 													[style.width]="'100%'"
 													*ngIf="!stone.photo.sizes.medium"

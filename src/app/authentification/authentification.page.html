@@ -22,11 +22,15 @@
     </ion-item>
 
 
+     <!-- -------------------------------- Bouton Sign In ---------------------------------- -->
+    <ion-button *ngIf="!userForm.valid" color="danger" expand="full" [disabled]="!userForm.valid" type="submit">Me connecter</ion-button>
+    <ion-button *ngIf="userForm.valid" color="success" expand="full" [disabled]="!userForm.valid" type="submit">Me connecter</ion-button>
+    <!-- ----------------------------------------------------------------------------------- -->
+    <!-- -------------------------------- Bouton Register ---------------------------------- -->
+    <ion-button expand="full" [disabled]="(!userForm.valid)" type="button" color="secondary" (click)="signUp()">M'enregistrer</ion-button>
+    <!-- ----------------------------------------------------------------------------------- -->
 
-    <ion-button expand="full" [disabled]="!userForm.valid" type="submit">Sign in</ion-button>
-    <ion-button expand="full" [disabled]="!userForm.valid" type="button" color="secondary" (click)="signUp()">Register
-    </ion-button>
-    <ion-button expand="full" type="button" color="tertiary" (click)="openPwReset()">Forgot password?</ion-button>
+    <ion-button class="" expand="full" type="button" color="warning" (click)="openPwReset()">J'ai oublié mon password !</ion-button>
 
 
   </form>

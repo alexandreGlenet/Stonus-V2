@@ -63,7 +63,7 @@ export class StoneBagPage implements OnInit {
 
 	//Segment
 	segmentModel = "bag";
-
+	createurName : any;
 	//Loic
 	uploaded_photo : any;
 
@@ -226,6 +226,7 @@ export class StoneBagPage implements OnInit {
 				(this.stoneForm.value.inbag = true),
 				// Pour assigner la valeur d'un fichier a mon input je dois passer par une constante.
 				(this.stoneForm.value.photoStone = this.uploaded_photo),
+				(this.stoneForm.value.createurName = this.user.fullname),
 				 // on peux pas assigner un objet a un input en JS
 			)
 			.subscribe(
@@ -295,7 +296,8 @@ export class StoneBagPage implements OnInit {
 				description: "",
 				user_id: "",
 				inbag: "",
-				photoStone: ""
+				photoStone: ["", Validators.required],
+				createurName: ""
 			});
 		}
 	}

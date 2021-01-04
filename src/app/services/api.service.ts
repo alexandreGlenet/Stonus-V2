@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, BehaviorSubject, from, of } from "rxjs";
 import { map, switchMap, tap } from "rxjs/operators";
-import { Platform, LoadingController } from "@ionic/angular";
+import { Platform, LoadingController, AlertController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { ICreationUser } from "../shared/auth.interfaces";
 import * as L from "leaflet";
@@ -46,7 +46,8 @@ export class ApiService {
 	constructor(
 		private http: HttpClient,
 		private storage: Storage,
-		private plt: Platform
+		private plt: Platform,
+		private alertCtrl: AlertController,
 	) {
 		this.plt.ready().then(() => {
 			this.storage.get(JWT_KEY).then((data) => {
@@ -89,7 +90,10 @@ export class ApiService {
 							L.marker([stone.latitude, stone.longitude], {
 								icon: this.smallIcon,
 							}).addTo(this.map);
-						}
+					 	} //else if (stone.createurName) {
+					//  	stone.createurName = stone.createurName['name'];
+					//  }
+						
 					}
 
 					return {
@@ -111,7 +115,9 @@ export class ApiService {
 				map((stone) => {
 					if (stone.photo) {
 						stone.photo = stone.photo.sizes["medium"];
-					}
+					  } // else if (stone.createurName) {
+					//  	stone.createurName = stone.createurName['name'];
+					//  }
 					return stone;
 				})
 			);
@@ -141,7 +147,7 @@ export class ApiService {
 	// CREATE STONE
 	// -------------------------------------------------------------------------------------------
 
-	validateCreateStone(title, description, user_id, inbag, uploaded_photo) {
+	validateCreateStone(title, description, user_id, inbag, uploaded_photo, createurName) {
 		// -- safety, todo form validation
 		if (
 			!title ||
@@ -161,13 +167,14 @@ export class ApiService {
 			}),
 		};
 		//uploaded_photo.name = title
-		console.log("Register Stone: ", title, description, user_id, inbag, uploaded_photo);
+		console.log("Register Stone: ", title, description, user_id, inbag, uploaded_photo, createurName);
 		const photo = [uploaded_photo, uploaded_photo.name];
 		const postData = new FormData();
 		postData.append("title", title);
 		postData.append("description", description);
 		postData.append("createur", user_id);
 		postData.append("inbag", inbag);
+		postData.append("createurname", createurName);
 		// Essais photo
 		
 		postData.append("photo", uploaded_photo, uploaded_photo.name );
@@ -410,9 +417,13 @@ export class ApiService {
 	signUp(username, email, password) {
 		// -- safety, todo form validation
 		if (!username || !email || !password) {
+			this.EnregistrementMailError();
 			console.log("error creation, missing elements");
 			return of(null);
-		}
+		} 
+		
+			
+		
 
 		console.log("Resgister user: ", username, email, password);
 
@@ -468,4 +479,43 @@ export class ApiService {
 	getUserId() {
 		return this.user.getValue().id;
 	}
+
+	// ALERTE
+	// ------------------------------------------------------------------------------------------------
+
+	async EnregistrementMailError() {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Erreur',
+      subHeader: 'Enregistrement de compte',
+      message: 'Vous avez oublié de renseigner une adresse mail !',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async EnregistrementPasswordError() {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Erreur',
+      subHeader: 'Enregistrement de compte',
+      message: 'Vous avez oublié de renseigner un mot de passe',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async EnregistrementPseudoError() {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Erreur',
+      subHeader: 'Enregistrement de compte',
+      message: 'Vous avez oublié de renseigner un pseudo',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
 }

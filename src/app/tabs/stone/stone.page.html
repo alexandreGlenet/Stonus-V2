@@ -4,10 +4,10 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="fond-sac">
 	<!-- SEGMENT -->
 	<!-- -------------------------------------------------------------------------------- -->
-	<ion-segment value="map" (ionChange)="onFilterUpdate($event)" [(ngModel)]="segmentModel">
+	<ion-segment value="map" (ionChange)="onFilterUpdate($event)" [(ngModel)]="segmentModel" class="fond-blanc">
 		<ion-segment-button value="map">
 			<ion-label>La carte</ion-label>
 		</ion-segment-button>
@@ -17,12 +17,14 @@
 	</ion-segment>
 	<!-- STONE-LISTS -->
 	<!-- --------------------------------------------------------------------------------- -->
-	<div *ngIf="segmentModel === 'stones-list'">
+	<div *ngIf="segmentModel === 'stones-list'" >
 		<div *ngIf="totalStones > 0" class="ion-text-center ion-padding">
-			Found {{ totalStones }}
+		<h1>Found {{ this.totalStones }}</h1>	
 		</div>
-
+		<h2 class="ion-text-center Titre-Tab-Page fond-gris padding-margin">Liste des pierres près de ton emplacement</h2>
+		<!-- <h2 class="padding-margin fond-gris">Liste des pierres {{ this.totalStones }}</h2> -->
 		<ion-card *ngFor="let stone of stones">
+			<!-- <h2 class="padding-margin fond-gris">Liste des pierres {{ this.totalStones }}</h2> -->
 			<div *ngIf="stone.inbag == false">
 				<ion-card-header>
 					<ion-card-title [innerHTML]="stone.title"></ion-card-title>
@@ -34,8 +36,8 @@
 				<ion-card-content>
 					<img [src]="stone.photo" *ngIf="stone.photo" class="post-img" />
 					<!-- <div [innerHTML]="stone.excerpt.rendered"></div> -->
-					<ion-button expand="full" fill="clear" [routerLink]="['/', 'tabs','stone','stones', stone.id]"
-						text-right (click)="onStoneDetails()">Read More...</ion-button>
+					<ion-button shape="round" expand="block" [routerLink]="['/', 'tabs','stone','stones', stone.id]"
+						text-right (click)="onStoneDetails()">Détails de la pierre</ion-button>
 				</ion-card-content>
 			</div>
 		</ion-card>
@@ -52,12 +54,15 @@
 		<div *ngIf="segmentModel === 'map'">
 			<ion-grid class="grid-stone-map">
 				<ion-row>
-					<ion-col>
-						<ion-button class="button-background-img" shape="round" expand="block"
+					<ion-col class="">
+						<div class="fond-gris">
+							<ion-button class="" shape="round" expand="block"
 							routerLink="/tabs/stone/placed-stone">Déposer une pierre !
 						</ion-button>
+						</div>
+						
 					</ion-col>
-					<ion-col size="12">
+					<!-- <ion-col size="12">
 						<ion-item style="cursor: pointer;" (click)="positionLocation()">
 							<ion-button fill="clear">
 								<ion-icon slot="start" name="map"></ion-icon>
@@ -81,7 +86,7 @@
 							<ion-label position="stacked">Location</ion-label>
 							<ion-textarea [(ngModel)]="location" type="text" style="margin-top: 20px;"></ion-textarea>
 						</ion-item>
-					</ion-col>
+					</ion-col> -->
 				</ion-row>
 			</ion-grid>
 		</div>

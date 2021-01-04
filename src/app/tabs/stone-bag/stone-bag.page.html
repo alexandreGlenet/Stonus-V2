@@ -40,12 +40,12 @@
 											[routerLink]=" ['/', 'tabs' ,'stone-bag','stone-bag-details', stone.id]"
 										>
 											<div class="photo-inventaire">
-												<img class="mask"
+												<img class="mask img"
 													[src]="stone.photo.sizes['medium']"
 													[style.width]="'100%'"
 													*ngIf="stone.photo.sizes.medium"
 												/>
-												<img class="mask"
+												<img class="mask img"
 													src="../../../assets/img/camera.png"
 													[style.width]="'100%'"
 													*ngIf="!stone.photo.sizes.medium"
@@ -172,15 +172,18 @@
 	<!-- CREATE STONE FORM -->
 	<!-- ---------------------------------------------------------------------------------------- -->
 	<div *ngIf="segmentModel === 'create-stone'">
-		<!-- <div *ngIf="onCreate"> -->
+		<ion-grid>
+			<h2 class="ion-text-center Titre-Tab-Page fond-gris padding-margin">Fabrication</h2>
+			<div class="fond-gris padding-margin">
+				<!-- <div *ngIf="onCreate"> -->
 		<form [formGroup]="stoneForm" (ngSubmit)="validateCreateStone()">
 			<ion-item>
-				<ion-label position="floating">Nom de la Pierre</ion-label>
-				<ion-input formControlName="title"></ion-input>
+				<ion-label position="floating" color="tertiary" class="label-form ion-text-center">Nom de la Pierre</ion-label>
+				<ion-input formControlName="title" color="tertiary"></ion-input>
 			</ion-item>
 
 			<ion-item>
-				<ion-label position="floating">Description</ion-label>
+				<ion-label position="floating" color="tertiary" class="label-form ion-text-center">Description</ion-label>
 				<ion-input formControlName="description"></ion-input>
 			</ion-item>
 
@@ -192,11 +195,18 @@
 				<ion-input formControlName="inbag"></ion-input>
 			</ion-item>
 
-			<ion-item>
-				<!-- <ion-label>Photo</ion-label> -->
-				<ion-input type="file" formControlName="photoStone" (change)="onFileChange($event)"></ion-input>
+			<ion-item class="hidden">
+				<ion-input formControlName="createurName"></ion-input>
+			</ion-item>
+
+			<div>
+				<ion-item>
+				<ion-label color="tertiary" class="myFakeUploadButton ion-text-center">Photo</ion-label><br/>
+				<ion-input type="file" id="myFileInput" formControlName="photoStone" (change)="onFileChange($event)"></ion-input>
 				<!-- <ion-input formControlName="photoStone" accept="image/*" ></ion-input> -->
 			</ion-item>
+			</div>
+			
 
 			<!-- <ion-item class="">
 				<ion-label position="">Photo de la pierre</ion-label>
@@ -208,7 +218,10 @@
 
 			<!-- Aperçu de la photo -->
 			<ion-item>
-				<img *ngIf="img1" [src]="img1" style="width: 60px; height: 60px;" />
+				<div class="photo-preview">
+					<img *ngIf="img1" [src]="img1" class="mask" />
+				</div>
+				
 			</ion-item>
 
 			<!-- Essais photo -->
@@ -254,10 +267,15 @@
         <ion-input type="password" formControlName="password"></ion-input>
       </ion-item> -->
 			<!-- || !this.photoStone -->
-			<ion-button expand="full" [disabled]="!stoneForm.valid" type="submit">
-				Confirm</ion-button
-			>
+			<ion-button *ngIf="!stoneForm.valid" color="danger" expand="full" [disabled]="!stoneForm.valid" type="submit">
+				Valider</ion-button>
+			<ion-button *ngIf="stoneForm.valid" color="success" expand="full" [disabled]="!stoneForm.valid" type="submit">
+				Valider</ion-button>
 		</form>
+			</div>
+			
+		</ion-grid>
+		
 		<!-- </div> -->
 		<!-- fab placed to the bottom end -->
 		<!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!onCreate">

@@ -92,6 +92,7 @@ export class PlacedSelectedStonePage implements OnInit {
 	ionViewDidEnter() {
 		console.log("placed-selected-stone: didEnter");
 		this.loadLocateMap();
+		
 	}
 
 	ionViewWillLeave() {
@@ -170,6 +171,11 @@ export class PlacedSelectedStonePage implements OnInit {
 		let id = this.route.snapshot.paramMap.get("id"); // se référe au router :id
 		//console.log("STONES ID : ", id);
 		//console.log(this.placedStoneForm.value.latitude);
+		this.placedStoneForm.setValue({
+			latitude: this.newMarker.getLatLng().lat,
+			longitude: this.newMarker.getLatLng().lng,
+			inbag: 0,
+		});
 		this.api
 			.validatePlacedStone(
 				id,

@@ -125,4 +125,16 @@ export class AuthentificationPage implements OnInit {
 		});
 		await alert.present();
 	}
+
+	async EnregistrementError() {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Erreur',
+      subHeader: 'Enregistrement de compte',
+      message: 'Vous avez oublié de rensigner une adresse mail',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
 }

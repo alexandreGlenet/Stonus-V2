@@ -7,10 +7,18 @@ html,
 body,
 #mapId {
     //display: initial;
-    height: 84%;
+    height: 78%;
     width: 100%;
     //padding: 10px;
     // margin: 10px;
+}
+
+.header h2 {
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 3rem;
+
 }
 
 .mapboxgl-map {
@@ -19,6 +27,10 @@ body,
 
 .hide {
     display: none !important;
+}
+
+ion-col {
+    padding: 0;
 }
 
 
@@ -41,6 +53,49 @@ body,
     min-width: 200px;
 }
 
+ion-button {
+    --background: linear-gradient(to right, #563A55, #3A2739) !important;
+    border-radius: 28px;
+    color: #FEC66D;
+    text-shadow: 2px 2px 1px #7D3D15;
+    //padding: 12px 76px;
+    border-radius: 28px;
+    border: 1px solid #9A7798;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 1px 1px 3px 0px #2c2727;
+    //padding: 12px 76px;
+    height: 45px;
+
+
+}
+
+
 .hidden {
     display: none;
+}
+
+.padding-margin {
+    padding: 5px;
+    margin: 20px;
+}
+
+.fond-gris {
+    //width: 100%;
+    //height: auto;
+    // background: url(../../../assets/img/bag/fond-gris.jpg) 0 0/100% 100% no-repeat;
+    // background-size: contain;
+    background: #032a26a8;
+    box-shadow: inset 0px 0px 11px 4px #0000007d;
+    padding: 10px;
+    // mask-image: url(../../../assets/img/bag/fond-gris.svg);
+}
+
+.fond-sac {
+    --background: url(../../../assets/img/bag/fond-sac.jpg) 0 0/100% 100% no-repeat;
+}
+
+.fond-blanc {
+    background: white;
 }
